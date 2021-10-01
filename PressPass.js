@@ -43,14 +43,7 @@
     // Button HTML, and listener, for checkbox adding. Made unnecessary by the setInterval.
     // <button type="button" id="checksButton" class="ckbutton">add checkboxes</button>\
     // document.getElementById("checksButton").addEventListener("click", addBoxes); 
-    var boxesID = setInterval(addBoxes, 500);
-    function pauseBrowser(millis) {
-      var date = Date.now();
-      var curDate = null;
-      do {
-          curDate = Date.now();
-      } while (curDate-date < millis);
-    } // Function to set up everything for the script (will run when page is loaded).
+    var boxesID = setInterval(addBoxes, 500);   
     
     function autoClick() {
       var intervalID = setInterval(clickOnTheButton, 500);
@@ -79,7 +72,8 @@
         // Appending the box HTML to the page number:
         //as[asdf].getElementsByClassName('text-uppercase')[0].appendChild(boxHTML);    
         // Append to the little newspaper icon.
-        as[asdf].getElementsByClassName('icon-paper')[0].appendChild(boxHTML);    
+        try{as[asdf].getElementsByClassName('icon-paper')[0].appendChild(boxHTML);} catch(error) {console.error(error);}
+        try{as[asdf].getElementsByClassName('icon-obit')[0].appendChild(boxHTML);} catch(error) {console.error(error);}
         //alert(increment);
         } // If there isn't a checkbox already there.
      } // Iterate over all search-records.
@@ -112,7 +106,6 @@
       } // If there's a scrapedResults at all
     } // Function to clear all cites from the bottom.
     
-    
     function scrapeLinks() {
       stringToPrint = ""
       var incrementor = 0;
@@ -138,9 +131,12 @@
           var aPage = String(as[asdf].getElementsByClassName('text-uppercase')[0].innerHTML);
           //alert(aPage);
           // The page number ("Page 69") is going to be the first element with the class name "text-uppercase".
-          aPage = aPage.substring(aPage.indexOf("Page") + 4).trim();
+          // Leaving the below line as a monument to stupidity.
+          // aPage = aPage.substring(aPage.indexOf("Page") + 4).trim();
+          aPage = aPage.replaceAll("Page","").trim();
           //alert(aPage);
           // Trim the "Paqe" from "Page 69" and remove trailing/leading spaces
+          aPage = aPage.replaceAll(" · Obituary","");
           var aCity = String(as[asdf].getElementsByClassName('text-dark')[0].innerHTML);
           //alert(aCity);
           // This will look like: <span class="icon-news icon-location2 text-muted"></span> Concord, California
@@ -210,8 +206,13 @@
           aDate = aDate.substring(aDate.length - 4) + "-" + aDate.substring(0, (aDate.length - 4))
           // Overly baroque way of moving the year to the front of the date.
           // After this, it will be "2007-10-07, ".
-          aDate = aDate.replace(",","").trim();
+          aDate = aDate.replaceAll(",","").trim();
           // After this, it will be "2007-10-07".
+          aDate = aDate.replaceAll(" ", "");
+          // Replace space.
+          aDate = aDate.replaceAll(" ", "");
+          // This is actually a U+2009 THIN SPACE.
+          // Afer this, it will remove that weird date bug that happens for obituaries sometimes.
           //alert(aDate)
           let queryString = window.location.href.substring(window.location.href.indexOf("#query=") + 7)
           // The current URL, but only the part after the query string.
@@ -287,4 +288,91 @@
       //document.body.innerHTML += stringToPrint;
     } // What to do when you clikc the freakin' button.
   } // End of what to do if it's a newspapers search page.
+  if (window.location.href.indexOf("newspapers.com/image/") >= 0){
+   // Try every 500 ms to add the event listener. In an affront to all common decency, this actually works.
+   var intervalAddCite = setInterval(addListener, 500);
+   
+   function addListener() {
+    document.getElementById("copyBtn").addEventListener("click", autoCite);
+   } // Adds a listener to the copy button; this won't be present when we first load the page, so we have to keep trying to do it over and over
+    
+   function autoCite() {
+    // This is largely identical to the previous defined function, but it's slightly different.
+    // Mostly, it's drawing the information from completely different places.
+    //alert("Sup nerd");
+    
+    // We're going to get the navbar_nodes, which contain all of the information we need for our citation.
+    navNode = document.getElementById('navbar_nodes');
+    
+    //var clipname = String(navNode.querySelectorAll('a')[0]);
+    //alert(clipname);
+    // This will give something like "<b>The Sacramento Bee (Sacramento, California)</b>".
+    var clipname = String(navNode.querySelectorAll('a')[0].innerHTML);
+    // This will give something like "<b>08 Oct 1868, Thu</b>".
+    var clipdate = String(navNode.querySelectorAll('a')[1].innerHTML);
+    // This will give something like "<em><b>Page 3</b></em>".
+    var clippage = String(navNode.getElementsByClassName('end')[0].innerHTML);
+    //alert(clippage)
+    
+    // Time to strip out the bold and em tags.
+    clipname = clipname.replaceAll("<b>","");
+    clipname = clipname.replaceAll("</b>","");
+     
+    clipdate = clipdate.replaceAll("<b>","");
+    clipdate = clipdate.replaceAll("</b>","");
+     
+    clippage = clippage.replaceAll("<b>","");
+    clippage = clippage.replaceAll("</b>","");
+    clippage = clippage.replaceAll("<em>","");
+    clippage = clippage.replaceAll("</em>","");
+     
+    ////////// We need to parse the date.... using a slightly different format than the one above, lol.
+     
+    //"08 Oct 1868, Thu"
+    // 0123456789111111
+    //           012345
+     
+    var parsedDy = clipdate.substr(0,2);
+    //alert(parsedDy);
+    var parsedYr = clipdate.substr(7,4);
+    alert(parsedYr);
+    //var parsedWk = clipdate.substr(13,3);
+    alert(parsedWk);
+    var parsedMn = "FOO";
+    var months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+    for(asdf in months) {
+     if (clipdate.indexOf(months[asdf]) >= 0){ 
+       // Take the incrementor and store it as the month.
+       // Remember to add one, or you are a bozo!
+       parsedMn = "0" + String(asdf+1).slice(-2);
+     } // If it actually finds the darn thing.
+    } // For every month.
+    clipdate = parsedYr + "-" + parsedMn + "-" + parsedDy
+        
+    var citeString = clipname + " " + clipdate + " " + clippage;
+    ////////// Now we are going to add the citation to the layout of the page. 
+    var citeDiv = document.createElement('div');
+    citeDiv.innerHTML = '<div id="citationDiv"><p>' + citeString + '</p></div>';
+    // This works, but it's added in kind of an awkward place.
+    //try{document.getElementsByClassName('form-group')[0].appendChild(citeDiv);} catch(error) {console.error(error);}
+    try{document.getElementsByClassName('ss-icons')[0].appendChild(citeDiv);} catch(error) {console.error(error);}
+   } // autoCite function.
+  } // End of what to do if it's an image page.
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
 })(); // End of the line.
