@@ -22,11 +22,13 @@
     newHTML.innerHTML   = '             \
       <div id="gmSomeID">             \
         <p><center>\
-        <button type="button" id="clickButton" class="clbutton">autoclick</button>\
+        &nbsp; &nbsp;Autoclick: <button type="button" id="clickButton" class="clbutton">off</button>\
          Select: <button type="button" id="saButton" class="sabutton">all</button>\
         <button type="button" id="snButton" class="snbutton">none</button>\
         Cites: <button type="button" id="scrapeButton" class="scbutton">generate</button>\
         <button type="button" id="clearButton" class="clbutton">clear</button>\
+        Open in new tab: <button type="button" id="openallButton" class="oabutton">selected</button>\
+        <button type="button" id="openeveryButton" class="oebutton">all</button>\
         </center></p>      \
       </div>                          \
       ';
@@ -40,13 +42,26 @@
     document.getElementById("snButton").addEventListener("click", uncheckAll);
     document.getElementById("scrapeButton").addEventListener("click", scrapeLinks); 
     document.getElementById("clearButton").addEventListener("click", clearLinks); 
+    document.getElementById("openallButton").addEventListener("click", openLinks); 
+    document.getElementById("openeveryButton").addEventListener("click", openAllLinks); 
+    // Set toggle variable for autoclicker
+    var autoClickOn = 0;
     // Button HTML, and listener, for checkbox adding. Made unnecessary by the setInterval.
     // <button type="button" id="checksButton" class="ckbutton">add checkboxes</button>\
     // document.getElementById("checksButton").addEventListener("click", addBoxes); 
-    var boxesID = setInterval(addBoxes, 500);   
+    var boxesID = setInterval(addBoxes, 500);
     
     function autoClick() {
-      var intervalID = setInterval(clickOnTheButton, 500);
+      if (autoClickOn == 0){
+        intervalID = setInterval(clickOnTheButton, 500);
+        document.getElementById("clickButton").innerHTML = "on";
+      }
+      if (autoClickOn == 1){
+        clearInterval(intervalID);
+        document.getElementById("clickButton").innerHTML = "off";
+      }
+      // If this is 0, yields 1. If this is 1, yields 0.
+      autoClickOn = 1 - autoClickOn;
     } // Function to click on the thing.
     function clickOnTheButton() {
       document.querySelector('.btn-block').click();
@@ -94,6 +109,53 @@
         bice[asdf].checked = false;
       } // Iterate over each box.
     } // Function to clear all checkboxes.
+    
+    function openLinks() {
+      var bice = document.getElementsByClassName('czechbox');
+      var checkedCount = 0;
+      for (var asdf in bice) {
+        if (bice[asdf].checked == true) {
+          checkedCount += 1;
+        } // If it's checked.
+      } // Over each checkbox.
+      var goAhead = confirm("This is about " + String(checkedCount) + " new tabs. Are you sure about that, buddy?");
+      if (goAhead == false){
+        let useless = 0;
+      } else {
+       var as = document.getElementsByClassName('search-record');
+       for(var asdf in as){
+        try {
+          //var stringy = String(as[asdf].innerHTML);
+          var checked = String(as[asdf].getElementsByClassName('czechbox')[0].checked);
+          if (checked == "true"){
+           var aLink = String(as[asdf].querySelectorAll('a')[0].href);
+           window.open(aLink);
+          } // If the checkbox is checked.
+         } catch (error) {console.error(error)} // I hate javascript.
+       } // For each entry in the whole array.
+      } // if the confirmation was given     
+    } // Function to open all links
+    
+    
+    function openAllLinks() {
+      var bice = document.getElementsByClassName('czechbox');
+      var checkedCount = 0;
+      for (var asdf in bice) {
+        checkedCount += 1;
+      } // Over each checkbox (we don't care if they're checked).
+      var goAhead = confirm("This is about " + String(checkedCount) + " new tabs. Are you sure about that, buddy?");
+      if (goAhead == false){
+        let useless = 0;
+      } else {
+       var as = document.getElementsByClassName('search-record');
+       for(var asdf in as){
+        try {
+         var aLink = String(as[asdf].querySelectorAll('a')[0].href);
+         window.open(aLink);
+        } catch (error) {console.error(error)} // I hate javascript.
+       } // For each entry in the whole array.
+      } // if the confirmation was given     
+    } // Function to open all links
     
     function clearLinks() {
       // This is a really weird way to write this
@@ -399,7 +461,9 @@
      citeString += "|location=" + clipcity;
      citeString += "}}&lt;/ref&gt;";
       
-     // remove extraneous spaces 
+     // remove extraneous spaces, double spaces, and nbsps.
+     citeString = citeString.replace("&nbsp;", " ");
+     citeString = citeString.replace("  ", " ");
      citeString = citeString.replace(" |", "|");
      
      ////////// Now we're gonna put it in the little box.
