@@ -297,137 +297,123 @@
    } // Adds a listener to the copy button; this won't be present when we first load the page, so we have to keep trying to do it over and over
     
    function autoCite() {
-    // This is largely identical to the previous defined function, but it's slightly different.
-    // Mostly, it's drawing the information from completely different places.
-    //alert("Sup nerd");
-    
-    // We're going to get the navbar_nodes, which contain all of the information we need for our citation.
-    navNode = document.getElementById('navbar_nodes');
-    
-    //var clipname = String(navNode.querySelectorAll('a')[0]);
-    //alert(clipname);
-    // This will give something like "<b>The Sacramento Bee (Sacramento, California)</b>".
-    var clipname = String(navNode.querySelectorAll('a')[0].innerHTML);
-    // This will give something like "<b>08 Oct 1868, Thu</b>".
-    var clipdate = String(navNode.querySelectorAll('a')[1].innerHTML);
-    // This will give something like "<em><b>Page 3</b></em>".
-    var clippage = String(navNode.getElementsByClassName('end')[0].innerHTML);
-    //alert(clippage)
-    
-    // Time to strip out the bold and em tags.
-    clipname = clipname.replaceAll("<b>","");
-    clipname = clipname.replaceAll("</b>","");
+    if (!document.getElementById("citationDiv")) {
+     // This is largely identical to the previous defined function, but it's slightly different.
+     // Mostly, it's drawing the information from completely different places.
+     //alert("Sup nerd");
      
-    clipdate = clipdate.replaceAll("<b>","");
-    clipdate = clipdate.replaceAll("</b>","");
+     // We're going to get the navbar_nodes, which contain all of the information we need for our citation.
+     navNode = document.getElementById('navbar_nodes');
      
-    clippage = clippage.replaceAll("<b>","");
-    clippage = clippage.replaceAll("</b>","");
-    clippage = clippage.replaceAll("<em>","");
-    clippage = clippage.replaceAll("</em>","");
+     //var clipname = String(navNode.querySelectorAll('a')[0]);
+     //alert(clipname);
+     // This will give something like "<b>The Sacramento Bee (Sacramento, California)</b>".
+     var clipname = String(navNode.querySelectorAll('a')[0].innerHTML);
+     // This will give something like "<b>08 Oct 1868, Thu</b>".
+     var clipdate = String(navNode.querySelectorAll('a')[1].innerHTML);
+     // This will give something like "<em><b>Page 3</b></em>".
+     var clippage = String(navNode.getElementsByClassName('end')[0].innerHTML);
+     //alert(clippage)
      
-    ////////// We need to parse the date.... using a slightly different format than the one above, lol.
+     // Time to strip out the bold and em tags.
+     clipname = clipname.replaceAll("<b>","");
+     clipname = clipname.replaceAll("</b>","");
+      
+     clipdate = clipdate.replaceAll("<b>","");
+     clipdate = clipdate.replaceAll("</b>","");
+      
+     clippage = clippage.replaceAll("<b>","");
+     clippage = clippage.replaceAll("</b>","");
+     clippage = clippage.replaceAll("<em>","");
+     clippage = clippage.replaceAll("</em>","");
+      
+     ////////// We need to parse the date.... using a slightly different format than the one above, lol.
+      
+     //"08 Oct 1868, Thu"
+     // 0123456789111111
+     //           012345
+      
+     var parsedDy = clipdate.substr(0,2);
+     //alert(parsedDy);
+     var parsedYr = clipdate.substr(7,4);
+     //alert(parsedYr);
+     //var parsedWk = clipdate.substr(13,3);
+     //alert(parsedWk);
+     var parsedMn = "FOO";
+     var months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+     for(asdf in months) {
+      if (clipdate.indexOf(months[asdf]) >= 0){ 
+        // Take the incrementor and store it as the month.
+        // Remember to add one, or you are a bozo!
+        parsedMn = "00" + String(parseInt(asdf)+1);
+        parsedMn = parsedMn.slice(-2);
+      } // If it actually finds the darn thing.
+     } // For every month.
+     clipdate = parsedYr + "-" + parsedMn + "-" + parsedDy
+      
+     ////////// Parse the newspaper name and city.
+     // Parse the city name, which is after the parenthesis.
+     var clipcity = clipname.substr(clipname.indexOf("(")+1);
+     // Remove the last parenthesis.
+     clipcity = clipcity.replaceAll(")","").trim();
+     // Crop clipname so it ends before the parenthesis.
+     clipname = clipname.substr(0,clipname.indexOf("(")).trim(); 
      
-    //"08 Oct 1868, Thu"
-    // 0123456789111111
-    //           012345
+     // Get the URL for the link.
+     var cliplink = document.getElementById('share_link_link_url').value;
+      
+     // Get the title for the clip. 
+     var cliptitl = document.getElementsByClassName('clip-title')[0].innerHTML;
+      
+     ////////// Parse the page number. 
+     clippage = clippage.replace("Page","").trim();
      
-    var parsedDy = clipdate.substr(0,2);
-    //alert(parsedDy);
-    var parsedYr = clipdate.substr(7,4);
-    //alert(parsedYr);
-    //var parsedWk = clipdate.substr(13,3);
-    //alert(parsedWk);
-    var parsedMn = "FOO";
-    var months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-    for(asdf in months) {
-     if (clipdate.indexOf(months[asdf]) >= 0){ 
-       // Take the incrementor and store it as the month.
-       // Remember to add one, or you are a bozo!
-       parsedMn = "0" + String(asdf+1).slice(-2);
-     } // If it actually finds the darn thing.
-    } // For every month.
-    clipdate = parsedYr + "-" + parsedMn + "-" + parsedDy
+     // Make a reasonably useful ref tag.
+     refTag = clipname.replace("The", "");
+     refTag = refTag.replace(/[^\x00-\x7F]/g, "");
+     refTag = refTag.replaceAll(" ","");
+     // Remove everything that isn't ASCII from the string.
+     for(asdf of ["~", "`", "!", "@", "#", "$", "%", "^", "&", "*", "(", ")", "_", "+", "-", "=", "{", "[", "}", "]", "|", "\\", ":", ";", '"', "'", "<", ",", ">", ".", "?", "/"]){
+      refTag = refTag.replaceAll(asdf, "");
+     } // Strip out weird stuff that won't go into a ref template name.
+     // Now we ensure that the dreaded "leading digit in a MediaWiki reference name" issue does not come up.
+     for(asdf of ["1", "2", "3", "4", "5", "6", "7", "8", "9", "0"]){
+      if(refTag.substr(0,1) == asdf){
+       refTag = "n" + refTag.substr(1);
+      } // If a number is the first character of the string, replace it with something. How about "n", for "newspaper".
+     } // Do this for all ten digits.
+     // Now we pad it out a little, in case the query is short.
+     refTag = refTag + "000000";
+     // Trim that padded query to ten characters.
+     refTag = refTag.substr(0, 6);
+     refTag = refTag + clipdate.replaceAll("-","");
+      
+     var citeString = "";
+     citeString += '&lt;ref name="' + refTag + '"&gt;'
+     citeString += "{{Cite newspaper";
+     citeString += "|url=" + cliplink;
+     citeString += "|date=" + clipdate;
+     citeString += "|page=" + clippage;
+     citeString += "|title=" + cliptitl;
+     citeString += "|newspaper=" + clipname;
+     citeString += "|location=" + clipcity;
+     citeString += "}}&lt;/ref&gt;";
+      
+     // remove extraneous spaces 
+     citeString = citeString.replace(" |", "|");
      
-    ////////// Parse the newspaper name and city.
-    // Parse the city name, which is after the parenthesis.
-    var clipcity = clipname.substr(clipname.indexOf("(")+1);
-    // Remove the last parenthesis.
-    clipcity = clipcity.replaceAll(")","").trim();
-    // Crop clipname so it ends before the parenthesis.
-    clipname = clipname.substr(0,clipname.indexOf("(")).trim(); 
-    
-    // Get the URL for the link.
-    var cliplink = document.getElementById('share_link_link_url').value;
+     ////////// Now we're gonna put it in the little box.
+       document.getElementById('share_link_link_url').value = citeString.replaceAll("&lt;","<").replaceAll("&gt;",">");
+      
+     //    var citeString = clipname + " " + clipdate + " " + clippage;
+     ////////// Now we are going to add the citation to the layout of the page. 
      
-    // Get the title for the clip. 
-    var cliptitl = document.getElementsByClassName('clip-title')[0].innerHTML;
-     
-    ////////// Parse the page number. 
-    clippage = clippage.replace("Page","").trim();
-    
-    // Make a reasonably useful ref tag.
-    refTag = clipname.replace("The", "");
-    refTag = refTag.replace(/[^\x00-\x7F]/g, "");
-    refTag = refTag.replaceAll(" ","");
-    // Remove everything that isn't ASCII from the string.
-    for(asdf of ["~", "`", "!", "@", "#", "$", "%", "^", "&", "*", "(", ")", "_", "+", "-", "=", "{", "[", "}", "]", "|", "\\", ":", ";", '"', "'", "<", ",", ">", ".", "?", "/"]){
-     refTag = refTag.replaceAll(asdf, "");
-    } // Strip out weird stuff that won't go into a ref template name.
-    // Now we ensure that the dreaded "leading digit in a MediaWiki reference name" issue does not come up.
-    for(asdf of ["1", "2", "3", "4", "5", "6", "7", "8", "9", "0"]){
-     if(refTag.substr(0,1) == asdf){
-      refTag = "n" + refTag.substr(1);
-     } // If a number is the first character of the string, replace it with something. How about "n", for "newspaper".
-    } // Do this for all ten digits.
-    // Now we pad it out a little, in case the query is short.
-    refTag = refTag + "000000";
-    // Trim that padded query to ten characters.
-    refTag = refTag.substr(0, 6);
-    refTag = refTag + clipdate.replaceAll("-","");
-     
-    var citeString = "";
-    citeString += '&lt;ref name="' + refTag + '"&gt;'
-    citeString += "{{Cite newspaper";
-    citeString += "|url=" + cliplink;
-    citeString += "|date=" + clipdate;
-    citeString += "|page=" + clippage;
-    citeString += "|title=" + cliptitl;
-    citeString += "|newspaper=" + clipname;
-    citeString += "|location=" + clipcity;
-    citeString += "}}&lt;/ref&gt;";
-     
-    // remove extraneous spaces 
-    citeString = citeString.replace(" |", "|");
-    
-    ////////// Now we're gonna put it in the little box.
-      document.getElementById('share_link_link_url').value = citeString.replaceAll("&lt;","<").replaceAll("&gt;",">");
-     
-    //    var citeString = clipname + " " + clipdate + " " + clippage;
-    ////////// Now we are going to add the citation to the layout of the page. 
-    
-    var citeDiv = document.createElement('div');
-    citeDiv.innerHTML = '<div id="citationDiv"><p>' + citeString + '</p></div>';
-    // This works, but it's added in kind of an awkward place.
-    //try{document.getElementsByClassName('form-group')[0].appendChild(citeDiv);} catch(error) {console.error(error);}
-    try{document.getElementsByClassName('ss-icons')[0].appendChild(citeDiv);} catch(error) {console.error(error);}
+     var citeDiv = document.createElement('div');
+     citeDiv.innerHTML = '<div id="citationDiv"><p>' + citeString + '</p></div>';
+     // This works, but it's added in kind of an awkward place.
+     //try{document.getElementsByClassName('form-group')[0].appendChild(citeDiv);} catch(error) {console.error(error);}
+     try{document.getElementsByClassName('ss-icons')[0].appendChild(citeDiv);} catch(error) {console.error(error);}
+    } // End of block for "if there's no autoCite block generated."
    } // autoCite function.
   } // End of what to do if it's an image page.
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
 })(); // End of the line.
