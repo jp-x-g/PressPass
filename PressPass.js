@@ -335,9 +335,9 @@
     var parsedDy = clipdate.substr(0,2);
     //alert(parsedDy);
     var parsedYr = clipdate.substr(7,4);
-    alert(parsedYr);
+    //alert(parsedYr);
     //var parsedWk = clipdate.substr(13,3);
-    alert(parsedWk);
+    //alert(parsedWk);
     var parsedMn = "FOO";
     var months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
     for(asdf in months) {
@@ -348,9 +348,64 @@
      } // If it actually finds the darn thing.
     } // For every month.
     clipdate = parsedYr + "-" + parsedMn + "-" + parsedDy
-        
-    var citeString = clipname + " " + clipdate + " " + clippage;
+     
+    ////////// Parse the newspaper name and city.
+    // Parse the city name, which is after the parenthesis.
+    var clipcity = clipname.substr(clipname.indexOf("(")+1);
+    // Remove the last parenthesis.
+    clipcity = clipcity.replaceAll(")","").trim();
+    // Crop clipname so it ends before the parenthesis.
+    clipname = clipname.substr(0,clipname.indexOf("(")).trim(); 
+    
+    // Get the URL for the link.
+    var cliplink = document.getElementById('share_link_link_url').value;
+     
+    // Get the title for the clip. 
+    var cliptitl = document.getElementsByClassName('clip-title')[0].innerHTML;
+     
+    ////////// Parse the page number. 
+    clippage = clippage.replace("Page","").trim();
+    
+    // Make a reasonably useful ref tag.
+    refTag = clipname.replace("The", "");
+    refTag = refTag.replace(/[^\x00-\x7F]/g, "");
+    refTag = refTag.replaceAll(" ","");
+    // Remove everything that isn't ASCII from the string.
+    for(asdf of ["~", "`", "!", "@", "#", "$", "%", "^", "&", "*", "(", ")", "_", "+", "-", "=", "{", "[", "}", "]", "|", "\\", ":", ";", '"', "'", "<", ",", ">", ".", "?", "/"]){
+     refTag = refTag.replaceAll(asdf, "");
+    } // Strip out weird stuff that won't go into a ref template name.
+    // Now we ensure that the dreaded "leading digit in a MediaWiki reference name" issue does not come up.
+    for(asdf of ["1", "2", "3", "4", "5", "6", "7", "8", "9", "0"]){
+     if(refTag.substr(0,1) == asdf){
+      refTag = "n" + refTag.substr(1);
+     } // If a number is the first character of the string, replace it with something. How about "n", for "newspaper".
+    } // Do this for all ten digits.
+    // Now we pad it out a little, in case the query is short.
+    refTag = refTag + "000000";
+    // Trim that padded query to ten characters.
+    refTag = refTag.substr(0, 6);
+    refTag = refTag + clipdate.replaceAll("-","");
+     
+    var citeString = "";
+    citeString += '&lt;ref name="' + refTag + '"&gt;'
+    citeString += "{{Cite newspaper";
+    citeString += "|url=" + cliplink;
+    citeString += "|date=" + clipdate;
+    citeString += "|page=" + clippage;
+    citeString += "|title=" + cliptitl;
+    citeString += "|newspaper=" + clipname;
+    citeString += "|location=" + clipcity;
+    citeString += "}}&lt;/ref&gt;";
+     
+    // remove extraneous spaces 
+    citeString = citeString.replace(" |", "|");
+    
+    ////////// Now we're gonna put it in the little box.
+      document.getElementById('share_link_link_url').value = citeString.replaceAll("&lt;","<").replaceAll("&gt;",">");
+     
+    //    var citeString = clipname + " " + clipdate + " " + clippage;
     ////////// Now we are going to add the citation to the layout of the page. 
+    
     var citeDiv = document.createElement('div');
     citeDiv.innerHTML = '<div id="citationDiv"><p>' + citeString + '</p></div>';
     // This works, but it's added in kind of an awkward place.
