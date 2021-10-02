@@ -22,30 +22,49 @@
     newHTML.innerHTML   = '             \
       <div id="gmSomeID">             \
         <p><center>\
-        &nbsp; &nbsp;Autoclick: <button type="button" id="clickButton" class="clbutton">off</button>\
-         Select: <button type="button" id="saButton" class="sabutton">all</button>\
-        <button type="button" id="snButton" class="snbutton">none</button>\
-        Cites: <button type="button" id="scrapeButton" class="scbutton">generate</button>\
-        <button type="button" id="clearButton" class="clbutton">clear</button>\
-        Open in new tab: <button type="button" id="openallButton" class="oabutton">selected</button>\
-        <button type="button" id="openeveryButton" class="oebutton">all</button>\
+        &nbsp; &nbsp;Auto:&nbsp;<button type="button" id="clickButton" class="clbutton" style="font-family: monospace"><small>click</small></button><button type="button" id="scrollButton" class="scrollButton" style="font-family: monospace"><small>scroll</small></button> \
+         Select:&nbsp;<button type="button" id="saButton" class="sabutton" style="font-family: monospace"><small>all</small></button><button type="button" id="snButton" class="snbutton" style="font-family: monospace"><small>none</small></button> \
+        Cites:&nbsp;<button type="button" id="scrapeButton" class="scbutton" style="font-family: monospace"><small>generate</small></button><button type="button" id="clearButton" class="clbutton" style="font-family: monospace"><small>clear</small></button> \
+        New&nbsp;tab:&nbsp;<button type="button" id="openallButton" class="oabutton" style="font-family: monospace"><small>selected</small></button><button type="button" id="openeveryButton" class="oebutton" style="font-family: monospace"><small>all</small></button> \
         </center></p>      \
       </div>                          \
       ';
     // Foolproof, but puts the buttons annoyingly at the very bottom of the page.
-    //document.body.appendChild(newHTML);
-    // This renders properly but is unclickable.
-    document.getElementsByClassName("sticky-top")[0].appendChild(newHTML);
-    document.getElementsByClassName("navbar")[0].appendChild(newHTML);
+    //document.getElementsByClassName("sticky-top")[0].appendChild(newHTML);
+    // Puts it up in the navbar, which is mostly deead space. I kind of like this, but it doesn't stick with you as you scroll.
+    //document.getElementsByClassName("navbar")[0].appendChild(newHTML);
+      
+    //&nbsp; &nbsp;Auto:&nbsp;<button type="button" id="clickButton" class="clbutton" style="font-family: monospace"><small>click</small></button><button type="button" id="scrollButton" class="scrollButton" style="font-family: monospace"><small>scroll</small></button>
+    document.getElementById('primary-filters').appendChild(newHTML);
+    
+    
+    
     document.getElementById("clickButton").addEventListener("click", autoClick);
+    document.getElementById("scrollButton").addEventListener("click", autoScroll); 
     document.getElementById("saButton").addEventListener("click", checkAll);
     document.getElementById("snButton").addEventListener("click", uncheckAll);
     document.getElementById("scrapeButton").addEventListener("click", scrapeLinks); 
     document.getElementById("clearButton").addEventListener("click", clearLinks); 
     document.getElementById("openallButton").addEventListener("click", openLinks); 
     document.getElementById("openeveryButton").addEventListener("click", openAllLinks); 
+    
+    
+    
+    var scrollHTML         = document.createElement ('div');
+    scrollHTML.innerHTML   = '             \
+      <div id="gmSomeID">             \
+        <p><center>\
+        &nbsp; &nbsp;Auto:&nbsp;<button type="button" id="clickButtonb" class="clbutton" style="font-family: monospace"><small>click</small></button><button type="button" id="scrollButtonb" class="scrollButton" style="font-family: monospace"><small>scroll</small></button>\
+        </center></p>      \
+      </div>                          \
+      ';
+    document.body.appendChild(scrollHTML);
+    document.getElementById("clickButtonb").addEventListener("click", autoClick);
+    document.getElementById("scrollButtonb").addEventListener("click", autoScroll); 
+    
     // Set toggle variable for autoclicker
     var autoClickOn = 0;
+    var autoScrollOn = 0;
     // Button HTML, and listener, for checkbox adding. Made unnecessary by the setInterval.
     // <button type="button" id="checksButton" class="ckbutton">add checkboxes</button>\
     // document.getElementById("checksButton").addEventListener("click", addBoxes); 
@@ -54,20 +73,43 @@
     function autoClick() {
       if (autoClickOn == 0){
         intervalID = setInterval(clickOnTheButton, 500);
-        document.getElementById("clickButton").innerHTML = "on";
+        document.getElementById("clickButton").style = "font-family: monospace; color:red";
+        document.getElementById("clickButtonb").style = "font-family: monospace; color:red";
       }
       if (autoClickOn == 1){
         clearInterval(intervalID);
-        document.getElementById("clickButton").innerHTML = "off";
+        document.getElementById("clickButton").style = "font-family: monospace";
+        document.getElementById("clickButtonb").style = "font-family: monospace";
       }
       // If this is 0, yields 1. If this is 1, yields 0.
       autoClickOn = 1 - autoClickOn;
     } // Function to click on the thing.
+    
     function clickOnTheButton() {
       document.querySelector('.btn-block').click();
     } // Love to define an entire function to call from the setInterval which I'm defining as a variable inside another function
       // That's sarcasm, actually. I don't "love to" do this. But I have to.
       // called from the click listener, to execute one line of code.  
+       
+    function autoScroll() {
+      if (autoScrollOn == 0){
+        intervalScroll = setInterval(scrollOnTheScreen, 50);
+        document.getElementById("scrollButton").style = "font-family: monospace; color:red";
+        document.getElementById("scrollButtonb").style = "font-family: monospace; color:red";
+        window.scrollBy(0,500);
+      }
+      if (autoScrollOn == 1){
+        clearInterval(intervalScroll);
+        document.getElementById("scrollButton").style = "font-family: monospace";
+        document.getElementById("scrollButtonb").style = "font-family: monospace";
+      }
+      // If this is 0, yields 1. If this is 1, yields 0.
+      autoScrollOn = 1 - autoScrollOn;
+    } // Function to click on the thing.
+    
+    function scrollOnTheScreen() {
+      window.scrollBy(0,15);
+    } // Same as above.
     
     function addBoxes() {
      var as = document.getElementsByClassName('search-record');
@@ -109,6 +151,23 @@
         bice[asdf].checked = false;
       } // Iterate over each box.
     } // Function to clear all checkboxes.
+        
+    
+    function openLink(links, counter, openAll) {
+      if(counter >= links.length) {return;}
+      var aLink = links[counter].querySelectorAll('a')[0].href
+      var checked = String(links[counter].getElementsByClassName('czechbox')[0].checked);
+      counter = counter + 1;
+      if ((checked == "true") || (openAll == "true")) {
+        //alert(counter);
+        //alert(aLink);
+        window.open(aLink);
+        setTimeout(function(){openLink(links, counter, openAll);}, 1000);
+      } else{
+        setTimeout(function(){openLink(links, counter, openAll);}, 1);
+      } //
+    } // Recursive function: opens the link and then calls itself for the next one.
+    
     
     function openLinks() {
       var bice = document.getElementsByClassName('czechbox');
@@ -119,20 +178,14 @@
         } // If it's checked.
       } // Over each checkbox.
       var goAhead = confirm("This is about " + String(checkedCount) + " new tabs. Are you sure about that, buddy?");
+      // Set first timeout. This will be incremented in the loop later.
+      var waitTime = 100;
       if (goAhead == false){
         let useless = 0;
       } else {
        var as = document.getElementsByClassName('search-record');
-       for(var asdf in as){
-        try {
-          //var stringy = String(as[asdf].innerHTML);
-          var checked = String(as[asdf].getElementsByClassName('czechbox')[0].checked);
-          if (checked == "true"){
-           var aLink = String(as[asdf].querySelectorAll('a')[0].href);
-           window.open(aLink);
-          } // If the checkbox is checked.
-         } catch (error) {console.error(error)} // I hate javascript.
-       } // For each entry in the whole array.
+       openLink(as, 0, "false");
+       // Invoke the function to open troves of links, and say "false" to "open all of them".
       } // if the confirmation was given     
     } // Function to open all links
     
@@ -143,19 +196,16 @@
       for (var asdf in bice) {
         checkedCount += 1;
       } // Over each checkbox (we don't care if they're checked).
-      var goAhead = confirm("This is about " + String(checkedCount) + " new tabs. Are you sure about that, buddy?");
+      var goAhead = confirm("This is about " + String(checkedCount) + " new tabs. Are you sure about that, pal?");
       if (goAhead == false){
         let useless = 0;
       } else {
        var as = document.getElementsByClassName('search-record');
-       for(var asdf in as){
-        try {
-         var aLink = String(as[asdf].querySelectorAll('a')[0].href);
-         window.open(aLink);
-        } catch (error) {console.error(error)} // I hate javascript.
-       } // For each entry in the whole array.
+       openLink(as, 0, "true");
+       // Invoke the function to open troves of links, and say "true" to "open all of them".
       } // if the confirmation was given     
-    } // Function to open all links
+    } // Function to open all links'
+
     
     function clearLinks() {
       // This is a really weird way to write this
@@ -399,7 +449,7 @@
      //alert(parsedDy);
      var parsedYr = clipdate.substr(7,4);
      //alert(parsedYr);
-     //var parsedWk = clipdate.substr(13,3);
+     var parsedWk = clipdate.substr(13,3);
      //alert(parsedWk);
      var parsedMn = "FOO";
      var months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
@@ -460,6 +510,7 @@
      citeString += "|newspaper=" + clipname;
      citeString += "|location=" + clipcity;
      citeString += "}}&lt;/ref&gt;";
+     citeString += "&lt;!-- " + parsedWk + " --&gt;"
       
      // remove extraneous spaces, double spaces, and nbsps.
      citeString = citeString.replace("&nbsp;", " ");
