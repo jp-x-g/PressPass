@@ -1,20 +1,181 @@
 // ==UserScript==
-// @name     PressPass FULL-SCROUNGE
-// @version  1
-// @grant    none
+// @name     PressPass
+// @version  1.5
+// @grant    GM.getValue
+// @grant    GM.setValue
 // @require  http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js
 // @require  https://gist.github.com/raw/2625891/waitForKeyElements.js
 // ==/UserScript==
 // JPxG, 2021 September 9
 
-//var load,execute,loadAndExecute;load=function(a,b,c){var d;d=document.createElement("script"),d.setAttribute("src",a),b!=null&&d.addEventListener("load",b),c!=null&&d.addEventListener("error",c),document.body.appendChild(d);return d},execute=function(a){var b,c;typeof a=="function"?b="("+a+")();":b=a,c=document.createElement("script"),c.textContent=b,document.body.appendChild(c);return c},loadAndExecute=function(a,b){return load(a,function(){return execute(b)})};
-
-//loadAndExecute("//ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js", function() {
-//    $("#answer-6825715").css("border", ".5em solid black");
-//});
-// I have no idea what the hell this is, but I found it on Stack Overflow.
-
 ( function() {
+  
+  var settingsDefault = {
+    "style":    1,
+    "multi":    0,
+    "spacing":  0,
+    "date":     1,
+    "accdate":  1,
+    "via":      1,
+    "location": 1
+  };
+  // Default settings.
+  
+  
+   
+  async function loadSettings(varDefault) {
+    variable = await JSON.parse(GM.getValue("pressPassConfig", JSON.stringify(varDefault)));
+    alert(variable);
+  }   
+  
+  try {
+    settings = loadSettings(settingsDefault);
+  } catch(e) {settings = settingsDefault;}
+  // The first thing we're going to do is try and retrieve the settings from local storage. If that doesn't work, we will use defaults.
+  // Make it a try block per documentation at http://greasemonkey.win-start.de/advanced/gm_getvalue.html
+  
+  settings = settingsDefault;
+  
+  var settingsOpen = 0;
+  // Settings are not currently open, so set this to zero.
+  
+  function settingsToggle() {
+    if (settingsOpen == 0){
+      settingsWindow();
+    }
+    if (settingsOpen == 1){
+      settingsClose();
+    }
+    settingsOpen = 1 - settingsOpen;
+  }
+  
+    var setHTML         = document.createElement ('div');
+    setHTML.innerHTML   = '             \
+      <div id="settingsBox">             \
+        <p><center>\
+        <span style="font: monospace;">Citation&nbsp;style:</span>\
+        <input type="radio" name="stylebox" id="stylebox1" value="st1">\
+        EN.WP\
+        <input type="radio" name="stylebox" id="stylebox2" value="st2">\
+        MLA\
+        <input type="radio" name="stylebox" id="stylebox3" value="st3">\
+        APA\
+        <input type="radio" name="stylebox" id="stylebox4" value="st4">\
+        Chicago\
+        <input type="radio" name="stylebox" id="stylebox5" value="st5">\
+        BiBTeX\
+        <br />\
+        <br />\
+        <b>Settings&nbsp;for&nbsp;Wikipedia&nbsp;citation&nbsp;templates</b>\
+        <br />\
+        Date&nbsp;format:\
+        <br /><input type="radio" name="datefbox" id="datefbox1" value="df1">\
+        1969-12-31&nbsp;(best: this is the international standard)\
+        <br /><input type="radio" name="datefbox" id="datefbox2" value="df2">\
+        31-12-1969\
+        <br /><input type="radio" name="datefbox" id="datefbox3" value="df3">\
+        1969&nbsp;Dec&nbsp;31\
+        <br /><input type="radio" name="datefbox" id="datefbox4" value="df4">\
+        1969&nbsp;December&nbsp;31\
+        <br /><input type="radio" name="datefbox" id="datefbox5" value="df5">\
+        December&nbsp;31,&nbsp;1969 (worst: if you do this you are a bozo)\
+        <br />\
+        <br />\
+        Optional&nbsp;parameters:\
+        <br />\
+        <input type="checkbox" name="setbox1" value="sb1"> <span style="font-family: monospace">access-date</span>\
+        <input type="checkbox" name="setbox2" value="sb2"> <span style="font-family: monospace">via</span>\
+        <input type="checkbox" name="setbox3" value="sb3"> <span style="font-family: monospace">location</span>\
+        <br />\
+        <br />\
+        Spacing:\
+        <br />\
+        &nbsp;&nbsp;&nbsp;Single&nbsp;line:\
+        <input type="radio" name="spacebox" id="spacebox1" value="sp1">\
+        Unspaced\
+        <input type="radio" name="spacebox" id="spacebox2" value="sp2">\
+        Spaced\
+        <br />\
+        &nbsp;&nbsp;&nbsp;Multiple&nbsp;line:\
+        <input type="radio" name="spacebox" id="spacebox3" value="sp3">\
+        Unspaced\
+        <input type="radio" name="spacebox" id="spacebox4" value="sp4">\
+        Spaced\
+        <br />\
+        <br />\
+        <b>To close and save configuration, click the "settings" button again.</b>\
+        </center></p>      \
+      </div>                          \
+      ';
+  
+  async function saveSettings(settingsToSave) {
+    await GM.setValue("pressPassConfig", JSON.stringify(settingsToSave));
+  }
+                
+  function settingsWindow() {
+    try {
+      document.getElementsByClassName("navbar")[0].appendChild(setHTML);
+      // Try to add it to navbar.
+    } catch(e) {
+      document.getElementsByClassName("clear pe")[0].appendChild(setHTML);
+      // This is what it'll do on the clippings page.
+    }
+    if (settings['style'] == 1) { document.getElementById("stylebox1").checked = true; }
+    if (settings['style'] == 2) { document.getElementById("stylebox2").checked = true; }
+    if (settings['style'] == 3) { document.getElementById("stylebox3").checked = true; }
+    if (settings['style'] == 4) { document.getElementById("stylebox4").checked = true; }
+    if (settings['style'] == 5) { document.getElementById("stylebox5").checked = true; }
+    if (settings['date'] == 1) { document.getElementById("datefbox1").checked = true; }
+    if (settings['date'] == 2) { document.getElementById("datefbox2").checked = true; }
+    if (settings['date'] == 3) { document.getElementById("datefbox3").checked = true; }
+    if (settings['date'] == 4) { document.getElementById("datefbox4").checked = true; }
+    if (settings['date'] == 5) { document.getElementById("datefbox5").checked = true; }
+    if (settings['accdate'] == 1) { document.getElementsByName("setbox1")[0].checked = true; }
+    if (settings['via'] == 1) { document.getElementsByName("setbox2")[0].checked = true; }
+    if (settings['location'] == 1) { document.getElementsByName("setbox3")[0].checked = true; }
+    if ((settings['multi'] == 0) && (settings['spacing'] == 0)) { document.getElementById("spacebox1").checked = true; }
+    if ((settings['multi'] == 0) && (settings['spacing'] == 1)) { document.getElementById("spacebox2").checked = true; }
+    if ((settings['multi'] == 1) && (settings['spacing'] == 0)) { document.getElementById("spacebox3").checked = true; }
+    if ((settings['multi'] == 1) && (settings['spacing'] == 1)) { document.getElementById("spacebox4").checked = true; }
+  }
+  
+  
+  function settingsClose() {
+    settings['accdate'] = 0;
+    settings['via'] = 0;
+    settings['location'] = 0;
+    if (document.getElementById("stylebox1").checked == true) { settings['style'] = 1; }
+    if (document.getElementById("stylebox2").checked == true) { settings['style'] = 2; }
+    if (document.getElementById("stylebox3").checked == true) { settings['style'] = 3; }
+    if (document.getElementById("stylebox4").checked == true) { settings['style'] = 4; }
+    if (document.getElementById("stylebox5").checked == true) { settings['style'] = 5; }
+    if (document.getElementById("datefbox1").checked == true) { settings['date'] = 1; }
+    if (document.getElementById("datefbox2").checked == true) { settings['date'] = 2; }
+    if (document.getElementById("datefbox3").checked == true) { settings['date'] = 3; }
+    if (document.getElementById("datefbox4").checked == true) { settings['date'] = 4; }
+    if (document.getElementById("datefbox5").checked == true) { settings['date'] = 5; }
+    if (document.getElementsByName("setbox1")[0].checked == true) {settings['accdate'] = 1; }
+    if (document.getElementsByName("setbox2")[0].checked == true) {settings['via'] = 1; }
+    if (document.getElementsByName("setbox3")[0].checked == true) {settings['location'] = 1; }
+    if (document.getElementById("spacebox1").checked == true) {settings['multi'] = 0; settings['spacing'] == 0; }
+    if (document.getElementById("spacebox2").checked == true) {settings['multi'] = 0; settings['spacing'] == 1; }
+    if (document.getElementById("spacebox3").checked == true) {settings['multi'] = 1; settings['spacing'] == 0; }
+    if (document.getElementById("spacebox4").checked == true) {settings['multi'] = 1; settings['spacing'] == 1; }
+    try {
+      document.getElementsByClassName("navbar")[0].removeChild(setHTML);
+      // Try to add it to navbar.
+    } catch(e) {
+      document.getElementsByClassName("clear pe")[0].removeChild(setHTML);
+      // This is what it'll do on the clippings page.
+    }
+    saveSettings(settings);
+  }
+  
+  
+  
+  
+  
+  
   if (window.location.href.indexOf("newspapers.com/search/") >= 0){
     // If we're on a search page at newspapers.com
     //alert("Running a script, wow.");
@@ -24,9 +185,10 @@
         <p><center>\
         &nbsp; &nbsp;Auto:&nbsp;<button type="button" id="clickButton" class="clbutton"><small>click</small></button><button type="button" id="scrollButton" class="scrollButton"><small>scroll</small></button> \
         Select:&nbsp;<button type="button" id="saButton" class="sabutton"><small>all</small></button><button type="button" id="snButton" class="snbutton"><small>none</small></button> \
-        Cites:&nbsp;<button type="button" id="scrapeButton" class="scbutton"><small>generate</small></button><button type="button" id="clearButton" class="clbutton"><small>clear</small></button> \
+        Cites:&nbsp;<button type="button" id="scrapeButton" class="scbutton"><small>make</small></button><button type="button" id="clearButton" class="clbutton"><small>clear</small></button> \
         New&nbsp;tab:&nbsp;<button type="button" id="openallButton" class="oabutton"><small>selected</small></button><button type="button" id="openeveryButton" class="oebutton"><small>all</small></button> \
         Links:&nbsp;<button type="button" id="newspageButton" class="npbutton"><small><small>&nbsp;&nbsp;&nbsp;image</small></small></button>\
+        &nbsp;<button type="button" id="settingsButton" class="stbutton"><small>Settings</small></button>\
         </center></p>      \
       </div>                          \
       ';
@@ -38,27 +200,29 @@
     //&nbsp; &nbsp;Auto:&nbsp;<button type="button" id="clickButton" class="clbutton" style="font-family: monospace"><small>click</small></button><button type="button" id="scrollButton" class="scrollButton" style="font-family: monospace"><small>scroll</small></button>
     document.getElementById('primary-filters').appendChild(newHTML);
     
+        document.getElementById("clickButton").addEventListener("click", autoClick);
+       document.getElementById("scrollButton").addEventListener("click", autoScroll); 
+           document.getElementById("saButton").addEventListener("click", checkAll);
+           document.getElementById("snButton").addEventListener("click", uncheckAll);
+       document.getElementById("scrapeButton").addEventListener("click", scrapeLinks); 
+        document.getElementById("clearButton").addEventListener("click", clearLinks); 
+      document.getElementById("openallButton").addEventListener("click", openLinks); 
+    document.getElementById("openeveryButton").addEventListener("click", openAllLinks); 
+     document.getElementById("newspageButton").addEventListener("click", toggleLinks);
+     document.getElementById("settingsButton").addEventListener("click", settingsToggle);
+    // Add listeners, so that all of the buttons actually do something.
     
-    
-       document.getElementById("clickButton").addEventListener("click", autoClick);
-      document.getElementById("scrollButton").addEventListener("click", autoScroll); 
-          document.getElementById("saButton").addEventListener("click", checkAll);
-          document.getElementById("snButton").addEventListener("click", uncheckAll);
-      document.getElementById("scrapeButton").addEventListener("click", scrapeLinks); 
-       document.getElementById("clearButton").addEventListener("click", clearLinks); 
-     document.getElementById("openallButton").addEventListener("click", openLinks); 
-   document.getElementById("openeveryButton").addEventListener("click", openAllLinks); 
-    document.getElementById("newspageButton").addEventListener("click", toggleLinks);
-    
-       document.getElementById("clickButton").style = "font-family: monospace; padding: 1px 1px 1px 1px";
-      document.getElementById("scrollButton").style = "font-family: monospace; padding: 1px 1px 1px 1px";
-          document.getElementById("saButton").style = "font-family: monospace; padding: 1px 1px 1px 1px";
-          document.getElementById("snButton").style = "font-family: monospace; padding: 1px 1px 1px 1px";
-      document.getElementById("scrapeButton").style = "font-family: monospace; padding: 1px 1px 1px 1px";
-       document.getElementById("clearButton").style = "font-family: monospace; padding: 1px 1px 1px 1px";
-     document.getElementById("openallButton").style = "font-family: monospace; padding: 1px 1px 1px 1px";
-   document.getElementById("openeveryButton").style = "font-family: monospace; padding: 1px 1px 1px 1px";
-    document.getElementById("newspageButton").style = "font-family: monospace; padding: 1px 1px 1px 1px";
+        document.getElementById("clickButton").style = "font-family: monospace; padding: 1px 1px 1px 1px";
+       document.getElementById("scrollButton").style = "font-family: monospace; padding: 1px 1px 1px 1px";
+           document.getElementById("saButton").style = "font-family: monospace; padding: 1px 1px 1px 1px";
+           document.getElementById("snButton").style = "font-family: monospace; padding: 1px 1px 1px 1px";
+       document.getElementById("scrapeButton").style = "font-family: monospace; padding: 1px 1px 1px 1px";
+        document.getElementById("clearButton").style = "font-family: monospace; padding: 1px 1px 1px 1px";
+      document.getElementById("openallButton").style = "font-family: monospace; padding: 1px 1px 1px 1px";
+    document.getElementById("openeveryButton").style = "font-family: monospace; padding: 1px 1px 1px 1px";
+     document.getElementById("newspageButton").style = "font-family: monospace; padding: 1px 1px 1px 1px";
+     document.getElementById("settingsButton").style = "font-family: monospace; padding: 1px 1px 1px 1px";
+    // Set formatting for the buttons.
     
     var scrollHTML         = document.createElement ('div');
     scrollHTML.innerHTML   = '             \
@@ -432,7 +596,29 @@
       //document.body.innerHTML += stringToPrint;
     } // What to do when you clikc the freakin' button.
   } // End of what to do if it's a newspapers search page.
+  
+  
+  
+  
+  
+  
+  
+  
   if (window.location.href.indexOf("newspapers.com/image/") >= 0){
+   // If it's an image page (i.e. the page with clippings on it
+    var clipSetHTML         = document.createElement ('div');
+    clipSetHTML.innerHTML   = '                                                                                    \
+      <div id="gmSomeID">                                                                                          \
+        &nbsp;<button type="button" id="settingsButton" class="stbutton"><small>PressPass settings</small></button>\
+      </div>                                                                                                       \
+      ';  
+    // Set the HTML for the settings button.
+    document.getElementsByClassName("clear pe")[0].appendChild(clipSetHTML);  
+    // Add to the header.
+    document.getElementById("settingsButton").style = "font-family: monospace; padding: 1px 1px 1px 1px";
+    // Format the button.
+    document.getElementById("settingsButton").addEventListener("click", settingsToggle);
+    // Add an event listener to show/hide settings when you click da freakin button.   
    // Try every 500 ms to add the event listener. In an affront to all common decency, this actually works.
    var intervalAddCite = setInterval(addListener, 500);
    
