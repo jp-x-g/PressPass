@@ -39,9 +39,12 @@ If you do not have a subscription, you should go to these pages instead: they ar
 
 # Individual newspages and clippings
 
-This is the simplest feature of the program, but in my opinion, it is the best and most useful. While it's possible to generate citations from the search page, these are worse: they don't have specific clipping links, and they don't have article titles (since this information is impossible to get without going to the newspage). Using PressPass to generate clipping citations allows you to fix both of these problems, and it's easy as hell.
+This is the simplest feature of the program, but in my opinion, it is the best and most useful. While it's possible to generate citations from the search page, these are worse: they don't have specific clipping links, and they don't have article titles (since this information is impossible to get without going to the newspage). Using PressPass to generate clipping citations allows you to fix both of these problems with virtually no effort. All you do is generate a clipping. If you type out the headline as the name of the clipping, this is a lot easier, but it works either way (you just have to manually type the headline into the citation).
 
-Here is how you do it:
+Then you click "**copy**" from the social media sharing popup (if you've disabled this, you have to re-enable it). This will automatically copy the formatted citation.
+
+
+It's easy as hell:
 
 ![A screenshot of the newspage page, while making a clipping.](/demo2.jpg)
 ![A screenshot of the newspage page, while making a clipping.](/demo3.jpg)
@@ -50,9 +53,9 @@ Here is how you do it:
 
 # About generated citations
 
-Citations are generated using the [{{cite newspaper}}](https://en.wikipedia.org/wiki/Template:Cite_newspaper) template. They contain an access URL, publication date, page number, newspaper name and location. They also contain an HTML note indicating which day of the week that was: in a tacit acknowledgement of their ephemeral relevance and planned obsolescence as artifacts of (https://en.wikipedia.org/wiki/Spectacle_(critical_theory))[Spectacle], newspapers have been saying stuff happened "last Thursday" for several hundred years.
+Citations are generated using the [{{cite newspaper}}](https://en.wikipedia.org/wiki/Template:Cite_newspaper) template. They contain an access URL, publication date, page number, newspaper name and location. They also contain an HTML note indicating which day of the week that was: in a tacit acknowledgement of their ephemeral relevance and planned obsolescence as artifacts of [https://en.wikipedia.org/wiki/Spectacle_&28critical_theory%29](Spectacle), newspapers have been saying stuff happened "last Thursday" for several hundred years.
 
-For example, the following citations were generated automatically from [this search](https://www.newspapers.com/search/#query=%22peepee+poopoo%22&sort=facet_year_month_day+asc%2C+score+desc), with 48 results:
+For example, the following citations were generated automatically from [this search page](https://www.newspapers.com/search/#query=%22peepee+poopoo%22&sort=facet_year_month_day+asc%2C+score+desc), with 48 results:
 > ``<!-- Query: %22peepee+poopoo%22&sort=facet_year_month_day+asc%2C+score+desc -->``
 
 > ``<ref name="scrounge00001">{{cite newspaper|url=https://www.newspapers.com/image/517561363/?terms=%22peepee%20poopoo%22&match=1|date=1981-03-01|page=62|title=Page 62|newspaper=The South Bend Tribune|location=South Bend, Indiana}}</ref><!-- SUN --><!-- M:2 -->``
