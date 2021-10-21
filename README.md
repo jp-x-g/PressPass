@@ -23,7 +23,7 @@ When you scroll down a large results page, you may notice that it takes a while 
 PressPass adds, on the left of the screen, a little checkbox next to each article. These checkboxes are used for two things: generating citations and opening pages in new tabs.
 
 #### Select all and select none
-These do exactly what they say. Make sure you do not click these if you have a bunch of carefully-selected results.
+These do exactly what they say. Make sure to avoid clicking these if you have a bunch of carefully-selected checkboxes, since it *really will* "select all" or "select none", undoing everything you just did.
 
 ### "Cites"
 Personally, I prefer to generate these from the clippings page (since I can get specific links to headlines that way, and I generate clipping for all my citations at any rate). However, you can do it from the search page if you want. Select all the checkboxes for articles you want to cite, and click "generate": below the bottom of the page, source code for all the citations you selected will appear.
@@ -41,7 +41,7 @@ If you do not have a subscription, you should go to these pages instead: they ar
 
 ## Individual newspages and clippings
 
-This is the simplest feature of the program, but in my opinion, it is the best and most useful. While it's possible to generate citations from the search page, these are worse: they don't have specific clipping links, and they don't have article titles (since this information is impossible to get without going to the newspage). Using PressPass to generate clipping citations allows you to fix both of these problems with virtually no effort. All you do is generate a clipping. If you type out the headline as the name of the clipping, this is a lot easier, but it works either way (you just have to manually type the headline into the citation).
+This is the simplest feature of the program to use, but in my opinion, it is the best and most useful. While it's possible to generate citations from the search page, these are worse: they don't have specific clipping links, and they don't have article titles (since this information is impossible to get without going to the newspage). Using PressPass to generate clipping citations allows you to fix both of these problems with virtually no effort. All you do is generate a clipping. If you type out the headline as the name of the clipping, this is a lot easier, but it works either way (you just have to manually type the headline into the citation).
 
 Then you click "**copy**" from the social media sharing popup (if you've disabled this, you have to re-enable it). This will automatically copy the formatted citation.
 
@@ -49,13 +49,17 @@ Then you click "**copy**" from the social media sharing popup (if you've disable
 It's easy as hell:
 
 ![A screenshot of the newspage page, while making a clipping.](/demo2.jpg)
+Open the page (using the "image" link setting). It will look like this. You may have to scrounge around and figure out which specific part of the page is the article you want: then click the "clip" button.
 ![A screenshot of the newspage page, while making a clipping.](/demo3.jpg)
+Drag the rectangle around and size it to fit over your article. Type in the headline as the clipping title (you can type in anything you want, of course, but this greatly reduces the amount of work you have to do).
 ![A screenshot of the newspage page, while making a clipping.](/demo4.jpg)
+By default, this social media sharing popup window is enabled whenever you make a clipping. You probably disabled it because it's annoying -- but you're about to see how based it can be.
 ![A screenshot of the newspage page, while making a clipping.](/demo5.jpg)
+When you click the "copy" button, it will generate a properly formatted citation, with the clipping URL automatically included, and put that in your clipboard. It will also show it in the sharing box, so you can check to see if you messed up.
 
 ## About generated citations
 
-Citations are generated, by default, using the [{{cite newspaper}}](https://en.wikipedia.org/wiki/Template:Cite_newspaper) template. They contain an access URL, page number, newspaper name, location, and publication date. They also include an HTML note indicating which day of the week that was (as, in a tacit acknowledgement of their ephemeral relevance and planned obsolescence as artifacts of [https://en.wikipedia.org/wiki/Spectacle_&28critical_theory%29](Spectacle), newspapers have been saying stuff happened "last Thursday" for several hundred years). 
+Citations are generated, by default, using the [{{cite newspaper}}](https://en.wikipedia.org/wiki/Template:Cite_newspaper) template. They contain an access URL, page number, newspaper name, location, and publication date. They also include an HTML note indicating which day of the week that was (as, in a tacit acknowledgement of their ephemeral relevance and planned obsolescence as artifacts of [Spectacle](https://en.wikipedia.org/wiki/Spectacle_&28critical_theory%29), newspapers have been saying stuff happened "last Thursday" for several hundred years). 
 
 For example, the following citations were generated automatically from [this search page](https://www.newspapers.com/search/#query=%22peepee+poopoo%22&sort=facet_year_month_day+asc%2C+score+desc), with 48 results:
 > ``<!-- Query: %22peepee+poopoo%22&sort=facet_year_month_day+asc%2C+score+desc -->``
