@@ -22,33 +22,43 @@
     newHTML.innerHTML   = '             \
       <div id="gmSomeID">             \
         <p><center>\
-        &nbsp; &nbsp;Auto:&nbsp;<button type="button" id="clickButton" class="clbutton" style="font-family: monospace"><small>click</small></button><button type="button" id="scrollButton" class="scrollButton" style="font-family: monospace"><small>scroll</small></button> \
-         Select:&nbsp;<button type="button" id="saButton" class="sabutton" style="font-family: monospace"><small>all</small></button><button type="button" id="snButton" class="snbutton" style="font-family: monospace"><small>none</small></button> \
-        Cites:&nbsp;<button type="button" id="scrapeButton" class="scbutton" style="font-family: monospace"><small>generate</small></button><button type="button" id="clearButton" class="clbutton" style="font-family: monospace"><small>clear</small></button> \
-        New&nbsp;tab:&nbsp;<button type="button" id="openallButton" class="oabutton" style="font-family: monospace"><small>selected</small></button><button type="button" id="openeveryButton" class="oebutton" style="font-family: monospace"><small>all</small></button> \
+        &nbsp; &nbsp;Auto:&nbsp;<button type="button" id="clickButton" class="clbutton"><small>click</small></button><button type="button" id="scrollButton" class="scrollButton"><small>scroll</small></button> \
+        Select:&nbsp;<button type="button" id="saButton" class="sabutton"><small>all</small></button><button type="button" id="snButton" class="snbutton"><small>none</small></button> \
+        Cites:&nbsp;<button type="button" id="scrapeButton" class="scbutton"><small>generate</small></button><button type="button" id="clearButton" class="clbutton"><small>clear</small></button> \
+        New&nbsp;tab:&nbsp;<button type="button" id="openallButton" class="oabutton"><small>selected</small></button><button type="button" id="openeveryButton" class="oebutton"><small>all</small></button> \
+        Links:&nbsp;<button type="button" id="newspageButton" class="npbutton"><small><small>&nbsp;&nbsp;&nbsp;image</small></small></button>\
         </center></p>      \
       </div>                          \
       ';
     // Foolproof, but puts the buttons annoyingly at the very bottom of the page.
     //document.getElementsByClassName("sticky-top")[0].appendChild(newHTML);
-    // Puts it up in the navbar, which is mostly deead space. I kind of like this, but it doesn't stick with you as you scroll.
     //document.getElementsByClassName("navbar")[0].appendChild(newHTML);
+    // Puts it up in the navbar, which is mostly deead space. I kind of like this, but it doesn't stick with you as you scroll.
       
     //&nbsp; &nbsp;Auto:&nbsp;<button type="button" id="clickButton" class="clbutton" style="font-family: monospace"><small>click</small></button><button type="button" id="scrollButton" class="scrollButton" style="font-family: monospace"><small>scroll</small></button>
     document.getElementById('primary-filters').appendChild(newHTML);
     
     
     
-    document.getElementById("clickButton").addEventListener("click", autoClick);
-    document.getElementById("scrollButton").addEventListener("click", autoScroll); 
-    document.getElementById("saButton").addEventListener("click", checkAll);
-    document.getElementById("snButton").addEventListener("click", uncheckAll);
-    document.getElementById("scrapeButton").addEventListener("click", scrapeLinks); 
-    document.getElementById("clearButton").addEventListener("click", clearLinks); 
-    document.getElementById("openallButton").addEventListener("click", openLinks); 
-    document.getElementById("openeveryButton").addEventListener("click", openAllLinks); 
+       document.getElementById("clickButton").addEventListener("click", autoClick);
+      document.getElementById("scrollButton").addEventListener("click", autoScroll); 
+          document.getElementById("saButton").addEventListener("click", checkAll);
+          document.getElementById("snButton").addEventListener("click", uncheckAll);
+      document.getElementById("scrapeButton").addEventListener("click", scrapeLinks); 
+       document.getElementById("clearButton").addEventListener("click", clearLinks); 
+     document.getElementById("openallButton").addEventListener("click", openLinks); 
+   document.getElementById("openeveryButton").addEventListener("click", openAllLinks); 
+    document.getElementById("newspageButton").addEventListener("click", toggleLinks);
     
-    
+       document.getElementById("clickButton").style = "font-family: monospace; padding: 1px 1px 1px 1px";
+      document.getElementById("scrollButton").style = "font-family: monospace; padding: 1px 1px 1px 1px";
+          document.getElementById("saButton").style = "font-family: monospace; padding: 1px 1px 1px 1px";
+          document.getElementById("snButton").style = "font-family: monospace; padding: 1px 1px 1px 1px";
+      document.getElementById("scrapeButton").style = "font-family: monospace; padding: 1px 1px 1px 1px";
+       document.getElementById("clearButton").style = "font-family: monospace; padding: 1px 1px 1px 1px";
+     document.getElementById("openallButton").style = "font-family: monospace; padding: 1px 1px 1px 1px";
+   document.getElementById("openeveryButton").style = "font-family: monospace; padding: 1px 1px 1px 1px";
+    document.getElementById("newspageButton").style = "font-family: monospace; padding: 1px 1px 1px 1px";
     
     var scrollHTML         = document.createElement ('div');
     scrollHTML.innerHTML   = '             \
@@ -65,21 +75,43 @@
     // Set toggle variable for autoclicker
     var autoClickOn = 0;
     var autoScrollOn = 0;
+    var newspageToggle = 0;
     // Button HTML, and listener, for checkbox adding. Made unnecessary by the setInterval.
     // <button type="button" id="checksButton" class="ckbutton">add checkboxes</button>\
     // document.getElementById("checksButton").addEventListener("click", addBoxes); 
     var boxesID = setInterval(addBoxes, 500);
     
+    
+    function toggleLinks() {
+      if (newspageToggle == 0) {
+        document.getElementById("newspageButton").innerHTML = "<small><small>newspage</small></small>";
+        var l = document.links;
+        for(var i=0; i<l.length; i++) {
+          l[i].href = String(l[i].href).replace("/image/", "/newspage/");
+        } // For each link in the page.
+      } // If we're setting it to "newspage".
+      
+      if (newspageToggle == 1) {
+        document.getElementById("newspageButton").innerHTML = "<small><small>&nbsp;&nbsp;&nbsp;image</small></small>";
+        var l = document.links;
+        for(var i=0; i<l.length; i++) {
+          l[i].href = String(l[i].href).replace("/newspage/", "/image/");
+        } // For each link in the page.
+      } // If we're setting it to "image".
+      newspageToggle = 1 - newspageToggle;
+      // Invert the toggle.
+    }
+    
     function autoClick() {
       if (autoClickOn == 0){
         intervalID = setInterval(clickOnTheButton, 500);
-        document.getElementById("clickButton").style = "font-family: monospace; color:red";
-        document.getElementById("clickButtonb").style = "font-family: monospace; color:red";
+        document.getElementById("clickButton").style = "font-family: monospace; padding: 1px 1px 1px 1px; color:red";
+        document.getElementById("clickButtonb").style = "font-family: monospace; padding: 1px 1px 1px 1px; color:red";
       }
       if (autoClickOn == 1){
         clearInterval(intervalID);
-        document.getElementById("clickButton").style = "font-family: monospace";
-        document.getElementById("clickButtonb").style = "font-family: monospace";
+        document.getElementById("clickButton").style = "font-family: monospace; padding: 1px 1px 1px 1px";
+        document.getElementById("clickButtonb").style = "ffont-family: monospace; padding: 1px 1px 1px 1px";
       }
       // If this is 0, yields 1. If this is 1, yields 0.
       autoClickOn = 1 - autoClickOn;
@@ -94,14 +126,14 @@
     function autoScroll() {
       if (autoScrollOn == 0){
         intervalScroll = setInterval(scrollOnTheScreen, 50);
-        document.getElementById("scrollButton").style = "font-family: monospace; color:red";
-        document.getElementById("scrollButtonb").style = "font-family: monospace; color:red";
+        document.getElementById("scrollButton").style = "font-family: monospace; padding: 1px 1px 1px 1px; color:red";
+        document.getElementById("scrollButtonb").style = "font-family: monospace; padding: 1px 1px 1px 1px; color:red";
         window.scrollBy(0,500);
       }
       if (autoScrollOn == 1){
         clearInterval(intervalScroll);
-        document.getElementById("scrollButton").style = "font-family: monospace";
-        document.getElementById("scrollButtonb").style = "font-family: monospace";
+        document.getElementById("scrollButton").style = "font-family: monospace; padding: 1px 1px 1px 1px";
+        document.getElementById("scrollButtonb").style = "font-family: monospace; padding: 1px 1px 1px 1px";
       }
       // If this is 0, yields 1. If this is 1, yields 0.
       autoScrollOn = 1 - autoScrollOn;
