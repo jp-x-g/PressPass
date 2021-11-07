@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name     PressPass
-// @version  1.5
+// @version  2.0
 // @grant    GM.getValue
 // @grant    GM.setValue
 // @require  http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js
@@ -17,25 +17,23 @@
     "date":     1,
     "accdate":  1,
     "via":      1,
-    "location": 1
+    "week":     1,
+    "length":   1
   };
   // Default settings.
   
   
-   
   async function loadSettings(varDefault) {
-    variable = await JSON.parse(GM.getValue("pressPassConfig", JSON.stringify(varDefault)));
-    alert(variable);
+    variable = await GM.getValue("pressPassConfig", JSON.stringify(varDefault));
+    settings = JSON.parse(variable);
   }   
   
   try {
-    settings = loadSettings(settingsDefault);
+    loadSettings(settingsDefault);
   } catch(e) {settings = settingsDefault;}
   // The first thing we're going to do is try and retrieve the settings from local storage. If that doesn't work, we will use defaults.
   // Make it a try block per documentation at http://greasemonkey.win-start.de/advanced/gm_getvalue.html
-  
-  settings = settingsDefault;
-  
+    
   var settingsOpen = 0;
   // Settings are not currently open, so set this to zero.
   
@@ -72,20 +70,20 @@
         <br /><input type="radio" name="datefbox" id="datefbox1" value="df1">\
         1969-12-31&nbsp;(best: this is the international standard)\
         <br /><input type="radio" name="datefbox" id="datefbox2" value="df2">\
-        31-12-1969\
+        31&nbsp;December&nbsp;1969\
         <br /><input type="radio" name="datefbox" id="datefbox3" value="df3">\
-        1969&nbsp;Dec&nbsp;31\
+        31&nbsp;Dec&nbsp;1969\
         <br /><input type="radio" name="datefbox" id="datefbox4" value="df4">\
-        1969&nbsp;December&nbsp;31\
+        Dec&nbsp;31,&nbsp;1969 (avoid if possible)\
         <br /><input type="radio" name="datefbox" id="datefbox5" value="df5">\
-        December&nbsp;31,&nbsp;1969 (worst: if you do this you are a bozo)\
+        December&nbsp;31,&nbsp;1969 (avoid if possible)\
         <br />\
         <br />\
         Optional&nbsp;parameters:\
         <br />\
         <input type="checkbox" name="setbox1" value="sb1"> <span style="font-family: monospace">access-date</span>\
         <input type="checkbox" name="setbox2" value="sb2"> <span style="font-family: monospace">via</span>\
-        <input type="checkbox" name="setbox3" value="sb3"> <span style="font-family: monospace">location</span>\
+        <input type="checkbox" name="setbox3" value="sb3"> weekday (as hidden note)\
         <br />\
         <br />\
         Spacing:\
@@ -102,6 +100,18 @@
         <input type="radio" name="spacebox" id="spacebox4" value="sp4">\
         Spaced\
         <br />\
+        <br />\
+        Ref name style:<br />\
+        <input type="radio" name="lengthbox" id="lengthbox1" value="lg1">\
+        <span style="font-family: monospace">&lt;ref name="Wetu691231"&gt;</span><br />\
+        <input type="radio" name="lengthbox" id="lengthbox2" value="lg2">\
+        <span style="font-family: monospace">&lt;ref name="Wetump19691231p7"&gt;</span><br />\
+        <input type="radio" name="lengthbox" id="lengthbox3" value="lg3">\
+        <span style="font-family: monospace">&lt;ref name="WetumpkaAr 1969-12-31 p7"&gt;</span><br />\
+        <input type="radio" name="lengthbox" id="lengthbox4" value="lg4">\
+        <span style="font-family: monospace">&lt;ref name="WetumpkaArgusPi 1969-12-31 p7"&gt;</span><br />\
+        <input type="radio" name="lengthbox" id="lengthbox5" value="lg5">\
+        <span style="font-family: monospace">&lt;ref name="The Wetumpka Argus-Picayune Weekly 1969-12-31 p7"&gt;</span><br />\
         <br />\
         <b>To close and save configuration, click the "settings" button again.</b>\
         </center></p>      \
@@ -132,18 +142,23 @@
     if (settings['date'] == 5) { document.getElementById("datefbox5").checked = true; }
     if (settings['accdate'] == 1) { document.getElementsByName("setbox1")[0].checked = true; }
     if (settings['via'] == 1) { document.getElementsByName("setbox2")[0].checked = true; }
-    if (settings['location'] == 1) { document.getElementsByName("setbox3")[0].checked = true; }
+    if (settings['week'] == 1) { document.getElementsByName("setbox3")[0].checked = true; }
     if ((settings['multi'] == 0) && (settings['spacing'] == 0)) { document.getElementById("spacebox1").checked = true; }
     if ((settings['multi'] == 0) && (settings['spacing'] == 1)) { document.getElementById("spacebox2").checked = true; }
     if ((settings['multi'] == 1) && (settings['spacing'] == 0)) { document.getElementById("spacebox3").checked = true; }
     if ((settings['multi'] == 1) && (settings['spacing'] == 1)) { document.getElementById("spacebox4").checked = true; }
+    if (settings['length'] == 1) { document.getElementById("lengthbox1").checked = true; }
+    if (settings['length'] == 2) { document.getElementById("lengthbox2").checked = true; }
+    if (settings['length'] == 3) { document.getElementById("lengthbox3").checked = true; }
+    if (settings['length'] == 4) { document.getElementById("lengthbox4").checked = true; }
+    if (settings['length'] == 5) { document.getElementById("lengthbox5").checked = true; }
   }
   
   
   function settingsClose() {
     settings['accdate'] = 0;
     settings['via'] = 0;
-    settings['location'] = 0;
+    settings['week'] = 0;
     if (document.getElementById("stylebox1").checked == true) { settings['style'] = 1; }
     if (document.getElementById("stylebox2").checked == true) { settings['style'] = 2; }
     if (document.getElementById("stylebox3").checked == true) { settings['style'] = 3; }
@@ -156,11 +171,16 @@
     if (document.getElementById("datefbox5").checked == true) { settings['date'] = 5; }
     if (document.getElementsByName("setbox1")[0].checked == true) {settings['accdate'] = 1; }
     if (document.getElementsByName("setbox2")[0].checked == true) {settings['via'] = 1; }
-    if (document.getElementsByName("setbox3")[0].checked == true) {settings['location'] = 1; }
-    if (document.getElementById("spacebox1").checked == true) {settings['multi'] = 0; settings['spacing'] == 0; }
-    if (document.getElementById("spacebox2").checked == true) {settings['multi'] = 0; settings['spacing'] == 1; }
-    if (document.getElementById("spacebox3").checked == true) {settings['multi'] = 1; settings['spacing'] == 0; }
-    if (document.getElementById("spacebox4").checked == true) {settings['multi'] = 1; settings['spacing'] == 1; }
+    if (document.getElementsByName("setbox3")[0].checked == true) {settings['week'] = 1; }
+    if (document.getElementById("spacebox1").checked == true) {settings['multi'] = 0; settings['spacing'] = 0; }
+    if (document.getElementById("spacebox2").checked == true) {settings['multi'] = 0; settings['spacing'] = 1; }
+    if (document.getElementById("spacebox3").checked == true) {settings['multi'] = 1; settings['spacing'] = 0; }
+    if (document.getElementById("spacebox4").checked == true) {settings['multi'] = 1; settings['spacing'] = 1; }
+    if (document.getElementById("lengthbox1").checked == true) { settings['length'] = 1; }
+    if (document.getElementById("lengthbox2").checked == true) { settings['length'] = 2; }
+    if (document.getElementById("lengthbox3").checked == true) { settings['length'] = 3; }
+    if (document.getElementById("lengthbox4").checked == true) { settings['length'] = 4; }
+    if (document.getElementById("lengthbox5").checked == true) { settings['length'] = 5; }
     try {
       document.getElementsByClassName("navbar")[0].removeChild(setHTML);
       // Try to add it to navbar.
@@ -171,7 +191,177 @@
     saveSettings(settings);
   }
   
-  
+  function composeCitation(link, date, page, title, npname, city, week) {
+    
+    // Make a reasonably useful ref tag.
+    refTag = npname;
+    refTag = refTag.replaceAll(/[^\x00-\x7F]/g, "");
+    // Remove everything that isn't ASCII from the string.
+    for(asdf of ["~", "`", "!", "@", "#", "$", "%", "^", "&", "*", "(", ")", "_", "+", "-", "=", "{", "[", "}", "]", "|", "\\", ":", ";", '"', "'", "<", ",", ">", ".", "?", "/"]){
+      refTag = refTag.replaceAll(asdf, " ");
+    } // Strip out weird stuff that won't go into a ref template name.
+    
+    // No idea why the hell this ended up being a thing, but strip it out.
+    refTag = refTag.replaceAll("nbsp", "");
+    
+    // Strip out multiple spaces.
+    refTag = refTag.replaceAll("     ", " ");
+    refTag = refTag.replaceAll("    ", " ");
+    refTag = refTag.replaceAll("   ", " ");
+    refTag = refTag.replaceAll("  ", " ");
+    refTag = refTag.replaceAll("  ", " ");
+    
+    if (settings['length'] != 5) {
+      refTag = refTag.replace("The", "");
+      refTag = refTag.replaceAll(" ","");
+    } // Trim spaces from the newspaper name, unless "enormously long ref tags" option is set.
+    
+    // Now we ensure that the dreaded "leading digit in a MediaWiki reference name" issue does not come up.
+    for(asdf of ["1", "2", "3", "4", "5", "6", "7", "8", "9", "0"]){
+      if(refTag.substr(0,1) == asdf){
+        refTag = "n" + refTag.substr(1);
+      } // If a number is the first character of the string, replace it with something. How about "n", for "newspaper".
+    } // Do this for all ten digits.
+    // Now we pad it out a little, in case the string is short.
+    // Trim that padded query down to character limit.
+    if (settings['length'] == 1) {
+      refTag = refTag.substr(0,4);
+    }
+    if (settings['length'] == 2) {
+      refTag = refTag.substr(0,6);
+    }
+    if (settings['length'] == 3) {
+      refTag = refTag.substr(0,10);
+    }
+    if (settings['length'] == 4) {
+      refTag = refTag.substr(0,15);
+    }
+    
+    // Add date format to the ref tag name based on settings. 
+    if (settings['length'] == 1) {
+      refTag = refTag + date.replaceAll("-","").substring(2);
+    } // Date for tag format 1: "691231"
+    if (settings['length'] == 2) {
+      refTag = refTag + date.replaceAll("-","") + "p" + page;
+    } // Date for tag format 2: "19691231p7"
+    if (settings['length'] > 2) {
+      refTag = refTag + " " + date + " p" + page;
+    } // Date for tag formats 3, 4, 5: "1969-12-31 p7"
+    
+    
+    // Today's date.    
+    var todayDate = new Date().toISOString().slice(0, 10);
+    
+    var monthodate = parseInt(date.substring(5,7));
+    var monthtoday = parseInt(todayDate.substring(5,7));
+    
+    // Short months
+    var moshs = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sept", "Oct", "Nov", "Dec"];
+    var moshd = moshs[monthodate - 1];
+    var mosht = moshs[monthtoday - 1];
+    // Long month
+    var molos = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+    var molod = molos[monthodate - 1];
+    var molot = molos[monthtoday - 1];
+    
+    // Days without padding (i.e. "1" instead of "01")
+    var sdayd = String(parseInt(date.substring(8,10)));
+    var sdayt = String(parseInt(todayDate.substring(8,10)));
+    
+    // Years as strings (quite simple)
+    var yeard = date.substring(0,4);
+    var yeart = todayDate.substring(0,4);
+    
+    // Initialize variables. If settings['date'] is 1, they will just stay like this.
+    var parsedDate  = date;
+    var parsedToday = todayDate;
+
+    // Now we parse the proper date format using the settings.
+    if (settings['date'] == 2) {
+      parsedDate  = sdayd + " " + molod + " " + yeard;
+      parsedToday = sdayt + " " + molot + " " + yeart;
+    }
+    if (settings['date'] == 3) {
+      parsedDate  = sdayd + " " + moshd + " " + yeard;
+      parsedToday = sdayt + " " + mosht + " " + yeart;
+    }        
+    if (settings['date'] == 4) {
+      parsedDate  = moshd + " " + sdayd + ", " + yeard;
+      parsedToday = mosht + " " + sdayt + ", " + yeart;
+    }
+    if (settings['date'] == 5) {
+      parsedDate  = molod + " " + sdayd + ", " + yeard;
+      parsedToday = molot + " " + sdayt + ", " + yeart;
+    }      
+    
+    // Compose an actual citation to return.
+    reffy = "";
+    var ml = settings['multi'];
+    // if (ml == 1) { reffy += "<br />"; }
+    if (settings['spacing'] == 0) {
+      reffy += '&lt;ref name="' + refTag + '"&gt;' + "{{Cite news";
+      if (ml == 1) { reffy += "<br />"; }
+      reffy += "|url=" + link;
+      if (ml == 1) { reffy += "<br />"; }
+      reffy += "|date=" + parsedDate;
+      if (ml == 1) { reffy += "<br />"; }
+      reffy += "|page=" + page;
+      if (ml == 1) { reffy += "<br />"; }
+      reffy += "|title=" + title;
+      if (ml == 1) { reffy += "<br />"; }
+      reffy += "|newspaper=" + npname;
+      if (ml == 1) { reffy += "<br />"; }
+      reffy += "|location=" + city;
+      if (ml == 1) { reffy += "<br />"; }
+      if (settings['via'] == 1) {
+        reffy += "|via=Newspapers.com";
+        if (ml == 1) { reffy += "<br />"; }
+      }
+      if (settings['accdate'] == 1) {
+        reffy += "|access-date=" + parsedToday;
+        if (ml == 1) { reffy += "<br />"; }
+      }
+      reffy += "}}&lt;/ref&gt;";
+      if (settings['week'] == 1) {
+        reffy += "&lt;!-- " + week + " --&gt;"
+      }
+    
+      reffy = reffy.replaceAll("&nbsp;", " ");
+      reffy = reffy.replaceAll("  ", " ");
+      reffy = reffy.replaceAll(" |", "|");
+    } // If spacing isn't enabled.
+    
+    
+    if (settings['spacing'] == 1) {
+      reffy += '&lt;ref name="' + refTag + '"&gt;' + "{{Cite news";
+      if (ml == 1) { reffy += "<br />"; }
+      reffy += "&nbsp;&nbsp;| url&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;= " + link;
+      if (ml == 1) { reffy += "<br />"; }
+      reffy += "&nbsp;&nbsp;| date &nbsp; &nbsp; &nbsp; &nbsp;= " + parsedDate;
+      if (ml == 1) { reffy += "<br />"; }
+      reffy += "&nbsp;&nbsp;| page &nbsp; &nbsp; &nbsp; &nbsp;= " + page;
+      if (ml == 1) { reffy += "<br />"; }
+      reffy += "&nbsp;&nbsp;| title&nbsp; &nbsp; &nbsp; &nbsp;= " + title;
+      if (ml == 1) { reffy += "<br />"; }
+      reffy += "&nbsp;&nbsp;| newspaper &nbsp; = " + npname;
+      if (ml == 1) { reffy += "<br />"; }
+      reffy += "&nbsp;&nbsp;| location &nbsp; &nbsp;= " + city;
+      if (ml == 1) { reffy += "<br />"; }
+      if (settings['via'] == 1) {
+        reffy += "&nbsp;&nbsp;| via&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;= Newspapers.com";
+        if (ml == 1) { reffy += "<br />"; }
+      }
+      if (settings['accdate'] == 1) {
+        reffy += "&nbsp;&nbsp;| access-date = " + parsedToday;
+        if (ml == 1) { reffy += "<br />"; }
+      }
+      reffy += "}}&lt;/ref&gt;";
+      if (settings['week'] == 1) {
+        reffy += "&lt;!-- " + week + " --&gt;"
+      }
+    } // If spacing is enabled.
+    return reffy;
+  }  
   
   
   
@@ -480,13 +670,13 @@
             
           // Below, is a huge ugly chunk of code to format the date properly (YYYY-MM-DD).
           var aDay = "XXX";
-          if (aDate.indexOf("Monday") != -1) { aDay = "MON"; };
-          if (aDate.indexOf("Tuesday") != -1) { aDay = "TUE"; };
-          if (aDate.indexOf("Wednesday") != -1) { aDay = "WED"; };
-          if (aDate.indexOf("Thursday") != -1) { aDay = "THU"; };
-          if (aDate.indexOf("Friday") != -1) { aDay = "FRI"; };
-          if (aDate.indexOf("Saturday") != -1) { aDay = "SAT"; };
-          if (aDate.indexOf("Sunday") != -1) { aDay = "SUN"; };
+          if (aDate.indexOf("Monday") != -1) { aDay = "Mon"; };
+          if (aDate.indexOf("Tuesday") != -1) { aDay = "Tue"; };
+          if (aDate.indexOf("Wednesday") != -1) { aDay = "Wed"; };
+          if (aDate.indexOf("Thursday") != -1) { aDay = "Thu"; };
+          if (aDate.indexOf("Friday") != -1) { aDay = "Fri"; };
+          if (aDate.indexOf("Saturday") != -1) { aDay = "Sat"; };
+          if (aDate.indexOf("Sunday") != -1) { aDay = "Sun"; };
           // Store which day it was as a three-letter day name.
              aDate = aDate.replace("Monday, ", "");
             aDate = aDate.replace("Tuesday, ", "");
@@ -524,7 +714,6 @@
           //alert(aDate)
           let queryString = window.location.href.substring(window.location.href.indexOf("#query=") + 7)
           // The current URL, but only the part after the query string.
-          // 
 
           // Now we are going to come up with a name for the ref titles.
           queryString = decodeURIComponent(queryString);
@@ -545,18 +734,27 @@
           // Trim that padded query to ten characters.
           queryString = queryString.substr(0, 10);
 
-          var citation = '&lt;ref name="' + queryString + ("00000" + incrementor).slice(-5) + '"&gt;'
-          // Ref name: "scrounge" plus zero-padded five-digit ref identifier
-          citation += '{{cite newspaper|url=' + aLink
-          //citation += '{{cite newspaper|url=' 
-          citation += '|date=' + aDate
-          citation += '|page=' + aPage
-          citation += '|title=Page ' + aPage
-          citation += '|newspaper=' + paper;
-          citation += '|location=' + aCity
-          citation += '}}&lt;/ref&gt;'
-          citation += '&lt;!-- ' + aDay + ' --&gt;'
-          citation += match;
+          // Commenting this out in favor of the globally defined composeCitation function (2021 Nov 6)
+          //var citation = '&lt;ref name="' + queryString + ("00000" + incrementor).slice(-5) + '"&gt;'
+          //// Ref name: "scrounge" plus zero-padded five-digit ref identifier
+          //citation += '{{cite newspaper|url=' + aLink
+          ////citation += '{{cite newspaper|url=' 
+          //citation += '|date=' + aDate
+          //citation += '|page=' + aPage
+          //citation += '|title=Page ' + aPage
+          //citation += '|newspaper=' + paper;
+          //citation += '|location=' + aCity
+          //citation += '}}&lt;/ref&gt;'
+          //citation += '&lt;!-- ' + aDay + ' --&gt;'
+          //citation += match;
+           
+           
+          var aTitle = "Page " + aPage;
+          // Use compositing function defined elsewhere.
+          var citation = composeCitation(aLink, aDate, aPage, aTitle, paper, aCity, aDay);
+          // function composeCitation(link, date, page, title, npname, city, week)  
+           
+           
           //alert(citation);
           //          '  | publisher = "
           // Above is the prim-and-proper vertical cite style.
@@ -590,7 +788,7 @@
       let today = new Date().toISOString().slice(0, 10)
       stringToPrint += "<br/>\n&lt;!-- Citations generated by JPxG's PressPass Full Scrounge v1.0, " + today + " --&gt;"
       var stringHTML         = document.createElement ('div');
-      stringHTML.innerHTML   = '<div id="scrapedResults" class="scrapedResults">' + stringToPrint + '</div>';
+      stringHTML.innerHTML   = '<span id="scrapedResults" class="scrapedResults" style="font: monospace;">' + stringToPrint + '</div>';
       document.body.appendChild(stringHTML);
       // This works, but freezes all Javascripts on the page (including loading of previews, etc).
       //document.body.innerHTML += stringToPrint;
@@ -698,45 +896,24 @@
      ////////// Parse the page number. 
      clippage = clippage.replace("Page","").trim();
      
-     // Make a reasonably useful ref tag.
-     refTag = clipname.replace("The", "");
-     refTag = refTag.replace(/[^\x00-\x7F]/g, "");
-     refTag = refTag.replaceAll(" ","");
-     // Remove everything that isn't ASCII from the string.
-     for(asdf of ["~", "`", "!", "@", "#", "$", "%", "^", "&", "*", "(", ")", "_", "+", "-", "=", "{", "[", "}", "]", "|", "\\", ":", ";", '"', "'", "<", ",", ">", ".", "?", "/"]){
-      refTag = refTag.replaceAll(asdf, "");
-     } // Strip out weird stuff that won't go into a ref template name.
-     // Now we ensure that the dreaded "leading digit in a MediaWiki reference name" issue does not come up.
-     for(asdf of ["1", "2", "3", "4", "5", "6", "7", "8", "9", "0"]){
-      if(refTag.substr(0,1) == asdf){
-       refTag = "n" + refTag.substr(1);
-      } // If a number is the first character of the string, replace it with something. How about "n", for "newspaper".
-     } // Do this for all ten digits.
-     // Now we pad it out a little, in case the query is short.
-     refTag = refTag + "000000";
-     // Trim that padded query to ten characters.
-     refTag = refTag.substr(0, 6);
-     refTag = refTag + clipdate.replaceAll("-","");
-      
-     var citeString = "";
-     citeString += '&lt;ref name="' + refTag + '"&gt;'
-     citeString += "{{Cite newspaper";
-     citeString += "|url=" + cliplink;
-     citeString += "|date=" + clipdate;
-     citeString += "|page=" + clippage;
-     citeString += "|title=" + cliptitl;
-     citeString += "|newspaper=" + clipname;
-     citeString += "|location=" + clipcity;
-     citeString += "}}&lt;/ref&gt;";
-     citeString += "&lt;!-- " + parsedWk + " --&gt;"
-      
-     // remove extraneous spaces, double spaces, and nbsps.
-     citeString = citeString.replace("&nbsp;", " ");
-     citeString = citeString.replace("  ", " ");
-     citeString = citeString.replace(" |", "|");
      
-     ////////// Now we're gonna put it in the little box.
-       document.getElementById('share_link_link_url').value = citeString.replaceAll("&lt;","<").replaceAll("&gt;",">");
+     // Old compositor for image-page citations. Replacing this with the function (2021 Nov 6). 
+     // var citeString = "";
+     // citeString += '&lt;ref name="' + refTag + '"&gt;'
+     // citeString += "{{Cite newspaper";
+     // citeString += "|url=" + cliplink;
+     // citeString += "|date=" + clipdate;
+     // citeString += "|page=" + clippage;
+     // citeString += "|title=" + cliptitl;
+     // citeString += "|newspaper=" + clipname;
+     // citeString += "|location=" + clipcity;
+     // citeString += "}}&lt;/ref&gt;";
+     // citeString += "&lt;!-- " + parsedWk + " --&gt;"
+
+     // Use compositing function defined elsewhere.
+     citeString = composeCitation(cliplink, clipdate, clippage, cliptitl, clipname, clipcity, parsedWk);
+     // function composeCitation(link, date, page, title, npname, city, week) 
+         
       
      //    var citeString = clipname + " " + clipdate + " " + clippage;
      ////////// Now we are going to add the citation to the layout of the page. 
@@ -746,6 +923,20 @@
      // This works, but it's added in kind of an awkward place.
      //try{document.getElementsByClassName('form-group')[0].appendChild(citeDiv);} catch(error) {console.error(error);}
      try{document.getElementsByClassName('ss-icons')[0].appendChild(citeDiv);} catch(error) {console.error(error);}
+     
+     // remove extraneous stuff and format for putting it in the copying box.
+     citeString = citeString.replaceAll("&nbsp;", " ");
+     citeString = citeString.replaceAll("&lt;","<");
+     citeString = citeString.replaceAll("&gt;",">");
+     citeString = citeString.replaceAll("<br />","\n");
+     citeString = citeString.replaceAll("     ", " ");
+     citeString = citeString.replaceAll("    ", " ");
+     citeString = citeString.replaceAll("   ", " ");
+     citeString = citeString.replaceAll("  ", " ");
+     citeString = citeString.replaceAll("  ", " ");
+      
+     ////////// Now we're gonna put it in the little box.
+     document.getElementById('share_link_link_url').value = citeString;
     } // End of block for "if there's no autoCite block generated."
    } // autoCite function.
   } // End of what to do if it's an image page.
