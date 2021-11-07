@@ -159,21 +159,21 @@ Examples of source code generated from the four available settings can be seen b
 
 > ``<ref name="Arizona Republic 1978-02-25 p7">{{Cite news``
 
-> ``  | url         = https://www.newspapers.com/clip/88492198/dems-in-disarray/``
+> `` &nbsp;| url &nbsp; &nbsp; &nbsp; &nbsp; = https://www.newspapers.com/clip/88492198/dems-in-disarray/``
 
-> ``  | date        = 1978-02-25``
+> `` &nbsp;| date &nbsp; &nbsp; &nbsp; &nbsp;= 1978-02-25``
 
-> ``  | page        = 7``
+> `` &nbsp;| page &nbsp; &nbsp; &nbsp; &nbsp;= 7``
 
-> ``  | title       = Dems In Disarray``
+> `` &nbsp;| title &nbsp; &nbsp; &nbsp; = Dems In Disarray``
 
-> ``  | newspaper   = Arizona Republic``
+> `` &nbsp;| newspaper &nbsp; = Arizona Republic``
 
-> ``  | location    = Phoenix, Arizona``
+> `` &nbsp;| location &nbsp; &nbsp;= Phoenix, Arizona``
 
-> ``  | via         = Newspapers.com``
+> `` &nbsp;| via &nbsp; &nbsp; &nbsp; &nbsp; = Newspapers.com``
 
-> ``  | access-date = 2021-11-07``
+> `` &nbsp;| access-date = 2021-11-07``
 
 > ``}}</ref><!-- Sat -->``
 
