@@ -64,30 +64,31 @@ By default, this social media sharing popup window is enabled whenever you make 
 ![A screenshot of the newspage page, while making a clipping.](/demo5.jpg)
 When you click the "copy" button, it will generate a properly formatted citation, with the clipping URL automatically included, and put that in your clipboard. It will also show it in the sharing box, so you can check to see if you messed up.
 
-## About generated citations
+## Generating citations
 
-Citations are generated, by default, using the [{{cite newspaper}}](https://en.wikipedia.org/wiki/Template:Cite_newspaper) template. They contain an access URL, page number, newspaper name, location, and publication date. They also include an HTML note indicating which day of the week that was (as, in a tacit acknowledgement of their ephemeral relevance and planned obsolescence as artifacts of [Spectacle](https://en.wikipedia.org/wiki/Spectacle_&28critical_theory%29), newspapers have been saying stuff happened "last Thursday" for several hundred years). 
+PressPass can be configured for five different citation styles: the English Wikipedia's [{{cite news}}](https://en.wikipedia.org/wiki/Template:Cite_news) template, [MLA](https://www.mla.org/MLA-Style) [9th Edition](https://owl.purdue.edu/owl/research_and_citation/mla_style/mla_formatting_and_style_guide/mla_changes_9th_edition.html), [APA](https://apastyle.apa.org/) [7th Edition](https://owl.purdue.edu/owl/research_and_citation/apa_style/apa_formatting_and_style_guide/apa_changes_7th_edition.html), [Chicago](https://www.chicagomanualofstyle.org/tools_citationguide.html), and [BiBTeX](http://www.bibtex.org/).
+
+> **EN.WP**: ``<ref name="Arizona Republic 1978-02-25 p7">{{Cite news|url=https://www.newspapers.com/clip/88492222/dems-in-disarray/|date=1978-02-25|page=7|title=Dems In Disarray|newspaper=Arizona Republic|location=Phoenix, Arizona|via=Newspapers.com|access-date=2021-11-07}}</ref><!-- Sat -->``
+
+> **MLA9**: “Dems In Disarray.” *Arizona Republic*, 25 Feb. 1978, https://www.newspapers.com/clip/88492222/dems-in-disarray/. Accessed 7 Nov. 2021.
+
+> **APA7**: Newspapers.com. (1978, February 25). *Dems in Disarray*. Arizona Republic. Retrieved November 7, 2021, from https://www.newspapers.com/clip/88492222/dems-in-disarray/.
+
+> **Chicago**: “Dems in Disarray.” *Arizona Republic*. February 25, 1978. https://www.newspapers.com/clip/88492222/dems-in-disarray/.
+
+> **BiBTeX**: ``@article{Dems-in-Disarray-1978, title = {Dems in Disarray} url = {https://www.newspapers.com/clip/88492222/dems-in-disarray/}, journal = {Arizona Republic}, publisher = {Newspapers.com}, year = {1978}, month = {Feb}, day = {25} }``
+
+
+Citations are generated, by default, using Wikipedia citation templates. These contain an access URL, page number, newspaper name, location, and publication date. They also include an HTML note indicating which day of the week that was (as, in a tacit acknowledgement of their ephemeral relevance and planned obsolescence as artifacts of [Spectacle](https://en.wikipedia.org/wiki/Spectacle_&28critical_theory%29), newspapers have been saying stuff happened "last Thursday" for several hundred years). 
 
 For example, the following citations were generated automatically from [this search page](https://www.newspapers.com/search/#query=%22peepee+poopoo%22&sort=facet_year_month_day+asc%2C+score+desc), with 48 results:
+
 > ``<!-- Query: %22peepee+poopoo%22&sort=facet_year_month_day+asc%2C+score+desc -->``
 
-> ``<ref name="peepeepoop00001">{{cite newspaper|url=https://www.newspapers.com/image/517561363/?terms=%22peepee%20poopoo%22&match=1|date=1981-03-01|page=62|title=Page 62|newspaper=The South Bend Tribune|location=South Bend, Indiana}}</ref><!-- SUN --><!-- M:2 -->``
-
-> ``<ref name="peepeepoop00002">{{cite newspaper|url=https://www.newspapers.com/image/172063371/?terms=%22peepee%20poopoo%22&match=1|date=1983-09-06|page=11|title=Page 11|newspaper=The Philadelphia Inquirer|location=Philadelphia, Pennsylvania}}</ref><!-- TUE --><!-- M:2 -->``
-
+> ``<ref name="The South Bend Tribune 1981-03-01 p62">{{Cite news|url=https://www.newspapers.com/image/517561363/?terms=%22peepee%20poopoo%22&match=1|date=1981-03-01|page=62|title=Page 62|newspaper=The South Bend Tribune|location=South Bend, Indiana|via=Newspapers.com|access-date=2021-11-07}}</ref><!-- Sun -->``
+> ``<ref name="The Philadelphia Inquirer 1983-09-06 p11">{{Cite news|url=https://www.newspapers.com/image/172063371/?terms=%22peepee%20poopoo%22&match=1|date=1983-09-06|page=11|title=Page 11|newspaper=The Philadelphia Inquirer|location=Philadelphia, ``Pennsylvania|via=Newspapers.com|access-date=2021-11-07}}</ref><!-- Tue -->
 > ``(...)``
-
-> ``<ref name="peepeepoop00045">{{cite newspaper|url=https://www.newspapers.com/image/243709955/?terms=%22peepee%20poopoo%22&match=1|date=2007-03-04|page=D01|title=Page D01|newspaper=Hartford Courant|location=Hartford, Connecticut}}</ref><!-- SUN -->``
-
-> ``<ref name="peepeepoop00046">{{cite newspaper|url=https://www.newspapers.com/image/716648207/?terms=%22peepee%20poopoo%22&match=1|date=2007-08-10|page=17|title=Page 17|newspaper=The Rock Island Argus|location=Moline, Illinois}}</ref><!-- FRI --><!-- M:2 -->``
-
-> ``<ref name="peepeepoop00047">{{cite newspaper|url=https://www.newspapers.com/image/716652545/?terms=%22peepee%20poopoo%22&match=1|date=2007-08-17|page=17|title=Page 17|newspaper=The Rock Island Argus|location=Moline, Illinois}}</ref><!-- FRI --><!-- M:2 -->``
-
-> ``<ref name="peepeepoop00048">{{cite newspaper|url=https://www.newspapers.com/image/639884840/?terms=%22peepee%20poopoo%22&match=1|date=2013-07-14|page=45|title=Page 45|newspaper=Sunday News|location=Lancaster, Pennsylvania}}</ref><!-- SUN --><!-- M:2 -->``
-
-> ``<!-- Citations generated by JPxG's PressPass Full Scrounge v1.0, 2021-10-21 -->``
-
-After each citation template, there are embedded HTML notes specifying the number of mentions on the page (if there's more than one).
-For example, the March 4 2007 *Hartford Courant* only contained the query once, whereas the August 10 2007 *Rock Island Argus* after it contained the query twice.
+> ``<ref name="Newsday Suffolk Edition 2006-10-11 p69">{{Cite news|url=https://www.newspapers.com/image/729886778/?terms=%22peepee%20poopoo%22&match=1|date=2006-10-11|page=69|title=Page 69|newspaper=Newsday (Suffolk Edition)|location=Melville, New York|via=Newspapers.com|access-date=2021-11-07}}</ref><!-- Wed -->``
+> ``<!-- Citations generated by JPxG's PressPass v2.1, 2021-11-07 -->``
 
 Of course, many of the results on any given newspaper search are likely to be irrelevant or unnecessary; for this reason, it is recommended to individually go through each result and carefully select citations for your article.
