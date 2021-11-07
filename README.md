@@ -7,18 +7,36 @@ PressPass can be configured for five different citation styles: the English Wiki
 Here is what it does, and how to make it do those things.
 
 ## Table of contents
-[Search page tools](#search-page)
-> [Autoclick and autoscroll)](#auto)
-> [Select all or none](#select)
-> [Generate citations](#cites)
-> [Open results in new tabs](#new-tab)
+**[Search page tools](#search-page)**
+> [Autoclick and autoscroll](#auto)
 
-[Individual newspages and clippings](#individual-newspages-and-clippings)
+> [Select all / none](#select)
+
+> [Generate citations](#cites)
+
+> [Auto-open in new tab](#new-tab)
+
+**[Individual newspages and clippings](#individual-newspages-and-clippings)**
 > [Generate citations](#individual-newspages-and-clippings)
 
-[Settings and configuration](#settings-and-configuration)
+**[Settings and configuration](#settings-and-configuration)**
 > [Citation styles](#citation-styles)
+
 > [{{cite news}} customization](#Customization-of-wikipedia-citations)
+
+**[Installation](#installation)**
+> [Firefox](#firefox)
+
+> [Chrome](#chrome)
+
+> [Microsoft Edge](#microsoft-edge)
+
+> [Safari](#safari)
+
+> [Opera](#opera)
+
+> [Brave](#brave)
+
 
 ## Search page
 ![A screenshot of the search-page menu.](/demo1.png)
@@ -82,6 +100,8 @@ The software's behavior when generating citations can be changed from the settin
 
 PressPass can be configured for five different citation styles: the English Wikipedia's [{{cite news}}](https://en.wikipedia.org/wiki/Template:Cite_news) template, [MLA](https://www.mla.org/MLA-Style) [9th Edition](https://owl.purdue.edu/owl/research_and_citation/mla_style/mla_formatting_and_style_guide/mla_changes_9th_edition.html), [APA](https://apastyle.apa.org/) [7th Edition](https://owl.purdue.edu/owl/research_and_citation/apa_style/apa_formatting_and_style_guide/apa_changes_7th_edition.html), [Chicago](https://www.chicagomanualofstyle.org/tools_citationguide.html), and [BiBTeX](http://www.bibtex.org/).
 
+Note that, with academic formats that include *italics*, the plain text that ends up in your clipboard will likely not work in text processors. For MLA, APA and Chicago citations, you will need to manually copy the text that appears *above* the "copy" box in the share window to retain the formatting.
+
 > **EN.WP**: ``<ref name="ArizonaRepublic 1978-02-25 p7">{{Cite news|url=https://www.newspapers.com/clip/88492222/dems-in-disarray/|date=1978-02-25|page=7|title=Dems In Disarray|newspaper=Arizona Republic|location=Phoenix, Arizona|via=Newspapers.com|access-date=2021-11-07}}</ref><!-- Sat -->``
 
 > **MLA9**: “Dems In Disarray.” *Arizona Republic*, 25 Feb. 1978, https://www.newspapers.com/clip/88492222/dems-in-disarray/. Accessed 7 Nov. 2021.
@@ -94,18 +114,107 @@ PressPass can be configured for five different citation styles: the English Wiki
 
 
 ### Customization of Wikipedia citations
-By default, citations are generated using Wikipedia citation templates, which (unlike the other styles) permit for a variety of customization.
+By default, citations are generated using Wikipedia citation templates, which (unlike the other styles) permit for a variety of customization. All Wikipedia citations contain an access URL, page number, newspaper name, location, and publication date. Other parameters are optional. Date format, and ref tag name style, can be customized.
 
-By default, Wikipedia citations contain an access URL, page number, newspaper name, location, publication date, access date, and hosting entity. They also include, separate from the citation template, an HTML note indicating which day of the week that was (as, in a tacit acknowledgement of their ephemeral relevance and planned obsolescence as artifacts of [Spectacle](https://en.wikipedia.org/wiki/Spectacle_&28critical_theory%29), newspapers have been saying stuff happened "last Thursday" for several hundred years). 
+#### Date format
+This is fairly self-explanatory: citation templates can handle several date formats, as listed in [MOS:DATE](https://en.wikipedia.org/wiki/Wikipedia:Manual_of_Style/Dates_and_numbers#Dates,_months,_and_years). It should be noted that, if you are worried about clashing with other templates, transcluding the [{{use dmy dates}}](https://en.wikipedia.org/wiki/Template:Use_dmy_dates) or [{{use mdy dates}}](https://en.wikipedia.org/wiki/Template:Use_mdy_dates) template at the top of an article will automatically cause all Citation Style 1 templates to show dates in the respective format. <!--[Jonesey95](https://en.wikipedia.org/w/index.php?title=Help_talk:Citation_Style_1&diff=1051164713&oldid=1051164075)-->The default date format is the [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) international standard, ``YYYY-MM-DD``. Examples of the other valid formats are given in the settings menu. 
 
-For example, the following citations were generated automatically from [this search page](https://www.newspapers.com/search/#query=%22peepee+poopoo%22&sort=facet_year_month_day+asc%2C+score+desc), with 48 results:
+#### Optional parameters
+By default, all of these are enabled; they are not strictly required, and can be removed if you want. ``access-date`` will include the date that the source was last accessed (and the citation was generated). ``via`` will include the platform used to access the source (i.e. newspapers.com).
 
-> ``<!-- Query: %22peepee+poopoo%22&sort=facet_year_month_day+asc%2C+score+desc -->``
+"Weekday" will include an HTML note indicating which day of the week the newspaper was published on. This is not a part of the citation template, but is available for convenience in writing articles: in a tacit acknowledgement of their ephemeral relevance and planned obsolescence as artifacts of [Spectacle](https://en.wikipedia.org/wiki/Spectacle_&28critical_theory%29), newspapers have been saying stuff happened "last Thursday" for several hundred years, and it is often useful to know the specific day some event happened.
 
-> ``<ref name="The South Bend Tribune 1981-03-01 p62">{{Cite news|url=https://www.newspapers.com/image/517561363/?terms=%22peepee%20poopoo%22&match=1|date=1981-03-01|page=62|title=Page 62|newspaper=The South Bend Tribune|location=South Bend, Indiana|via=Newspapers.com|access-date=2021-11-07}}</ref><!-- Sun -->``
-> ``<ref name="The Philadelphia Inquirer 1983-09-06 p11">{{Cite news|url=https://www.newspapers.com/image/172063371/?terms=%22peepee%20poopoo%22&match=1|date=1983-09-06|page=11|title=Page 11|newspaper=The Philadelphia Inquirer|location=Philadelphia, Pennsylvania|via=Newspapers.com|access-date=2021-11-07}}</ref><!-- Tue -->``
-> ``(...)``
-> ``<ref name="Newsday Suffolk Edition 2006-10-11 p69">{{Cite news|url=https://www.newspapers.com/image/729886778/?terms=%22peepee%20poopoo%22&match=1|date=2006-10-11|page=69|title=Page 69|newspaper=Newsday (Suffolk Edition)|location=Melville, New York|via=Newspapers.com|access-date=2021-11-07}}</ref><!-- Wed -->``
-> ``<!-- Citations generated by JPxG's PressPass v2.1, 2021-11-07 -->``
+#### Spacing
+Citation templates, in articles, will function the same way regardless of how much spacing is in the source code. While they are typically written out on one line, they don't *need* to be, and are often split across multiple lines to be easily edited, or spaced out for readability. There are four options here; note that, as with the formatted text in academic citations, these will need to be manually copied from the text above the "copy" box in the share window to work properly.
 
-Of course, many of the results on any given newspaper search are likely to be irrelevant or unnecessary; for this reason, it is recommended to individually go through each result and carefully select citations for your article.
+Examples of source code generated from the four available settings can be seen below.
+**Single-line unspaced:**
+> ``<ref name="Arizona Republic 1978-02-25 p7">{{Cite news|url=https://www.newspapers.com/clip/88492222/dems-in-disarray/|date=1978-02-25|page=7|title=Dems in Disarray|newspaper=Arizona Republic|location=Phoenix, Arizona|via=Newspapers.com|access-date=2021-11-07}}</ref><!-- Sat -->``
+
+**Single-line spaced:**
+> ``<ref name="Arizona Republic 1978-02-25 p7">{{Cite news  | url         = https://www.newspapers.com/clip/88492198/dems-in-disarray/  | date        = 1978-02-25  | page        = 7  | title       = Dems In Disarray  | newspaper   = Arizona Republic  | location    = Phoenix, Arizona  | via         = Newspapers.com  | access-date = 2021-11-07}}</ref><!-- Sat -->``
+
+**Multiple-line unspaced:**
+> ``<ref name="Arizona Republic 1978-02-25 p7">{{Cite news``
+
+> ``|url=https://www.newspapers.com/clip/88492198/dems-in-disarray/``
+
+> ``|date=1978-02-25``
+
+> ``|page=7``
+
+> ``|title=Dems In Disarray``
+
+> ``|newspaper=Arizona Republic``
+
+> ``|location=Phoenix, Arizona``
+
+> ``|via=Newspapers.com``
+
+> ``|access-date=2021-11-07``
+
+> ``}}</ref><!-- Sat -->``
+
+**Multiple-line spaced:**
+
+> ``<ref name="Arizona Republic 1978-02-25 p7">{{Cite news``
+
+> ``  | url         = https://www.newspapers.com/clip/88492198/dems-in-disarray/``
+
+> ``  | date        = 1978-02-25``
+
+> ``  | page        = 7``
+
+> ``  | title       = Dems In Disarray``
+
+> ``  | newspaper   = Arizona Republic``
+
+> ``  | location    = Phoenix, Arizona``
+
+> ``  | via         = Newspapers.com``
+
+> ``  | access-date = 2021-11-07``
+
+> ``}}</ref><!-- Sat -->``
+
+#### Ref name style
+This is fairly self-explanatory. Some people prefer short ref names that don't clutter up article text, whereas some people prefer long ref names that easily distinguish one source from another. Styles 1 through 4 abbreviate the name of the publication (to 4, 6, 10 and 15 characters respectively); Style 5 includes the full name of the publication (no matter how long it is).
+
+## Installation
+PressPass is a browser script, which means that it should run fine whether you are on Micro$oft Windows, OS X, GNU/Linux, FreeBSD, OpenIndiana Hipster, or whatever.
+
+### Firefox
+Installing PressPass requires the wonderful open-source software "[Greasemonkey](https://en.wikipedia.org/wiki/Greasemonkey)", an add-on which can be installed from Mozilla's website [here](https://addons.mozilla.org/en-US/firefox/addon/greasemonkey/).
+
+After you have installed GreaseMonkey, create a new userscript from the Greasemonkey menu, like this:
+
+![A screenshot of the Greasemonkey menu, with "new userscript" highlighted.](/demo7.png)
+
+Then, you will be taken to a page that looks like this:
+
+![A screenshot of a blank new Greasemonkey script.](/demo8.png)
+
+The raw source code for this script can be found [here](https://raw.githubusercontent.com/jp-x-g/PressPass/main/PressPass.js). Copy all of that, and paste it into the blank userscript (replacing the placeholder text that's already there). Congratulations, you has a PressPass.
+
+### Chrome
+I have not tried this yet. I think that what you need to install is a strange closed-source application called "[Tampermonkey](https://en.wikipedia.org/wiki/Tampermonkey)", which can be installed from the Chrome web store [here](https://chrome.google.com/webstore/detail/tampermonkey/dhdgffkkebhmkfjojejmpbldmpobfkfo?hl=en).
+
+### Microsoft Edge
+It looks like there is a version of Tampermonkey for Edge [here](https://microsoftedge.microsoft.com/addons/detail/tampermonkey/iikmkjmpaadaobahmlepeloendndfphd)-->, although I don't know anything about it.
+
+### Safari
+I hear there is something called "GreaseKit", but I don't know much about Safari.
+
+### Opera
+There's supposed to be a Tampermonkey extension for Opera. Who knows.
+
+### Brave
+Apparently, all Chrome extensions work in Brave, which means you can install Tampermonkey in it. Some more information about adding extensions to Brave can be found [here](https://support.brave.com/hc/en-us/articles/360017909112-How-can-I-add-extensions-to-Brave-).
+
+## Shortcomings and flaws
+### Author names
+The names of authors are often not included in newspaper articles, and they are not encoded into Newspapers.com metadata. Accordingly, there is no way to include them in automatically-generated citations; they must be typed in manually if they are to be included at all.
+### Julian-Gregorian date ambiguity
+As [Jc3s5h](https://en.wikipedia.org/wiki/User:Jc3s5h) pointed out, Wikipedia's Citation Style 1 does not accept YYYY-MM-DD dates in the Julian calendar. Detailed information about the [Julian-Gregorian transition period](https://en.wikipedia.org/wiki/Old_Style_and_New_Style_dates) is far beyond the scope of this documentation, but suffice it to say that very old publications may require some special care to be cited properly. The *Pennsylvania Gazette*, for example, is available on Newspapers.com between 1728 and 1752, during which time British colonies in North America used Old Style Julian dates. Here be dragons!
+### Mass citation generation
+While it is possible to generate large amounts of citations from the search page, many of the results on any given newspaper search are likely to be irrelevant or unnecessary, so please be mindful when doing so and avoid [refbombing](https://en.wikipedia.org/wiki/Wikipedia:Citation_overkill). The mass-generation abilities of this software are intended to be an adjunct to manual review of the sources, not a weapon to induce blunt-force trauma. Before adding a newspaper citation to a Wikipedia article, review it and ensure that its content is both relevant and significant to the text it supports in the article. Adding large quantities of low-quality citations (especially ones that haven't been individually reviewed) is a nuisance, and is often considered disruptive.
