@@ -55,9 +55,9 @@
         <input type="radio" name="stylebox" id="stylebox1" value="st1">\
         EN.WP\
         <input type="radio" name="stylebox" id="stylebox2" value="st2">\
-        MLA\
+        MLA9\
         <input type="radio" name="stylebox" id="stylebox3" value="st3">\
-        APA\
+        APA7\
         <input type="radio" name="stylebox" id="stylebox4" value="st4">\
         Chicago\
         <input type="radio" name="stylebox" id="stylebox5" value="st5">\
@@ -194,16 +194,20 @@
   function composeCitation(link, date, page, title, npname, city, week) {
     
     // Make a reasonably useful ref tag.
+    // No idea why the hell this ended up being a thing, but strip it out.
+    npname = npname.replaceAll("&nbsp,", "");    
+    npname = npname.replaceAll("&nbsp;", "");   
+    //if (npname.slice(-1) != " ") {
+      //npname = npname.substring(0, npname.length - 1);
+    //} // Sometimes this happens, I suppose.
+    
     refTag = npname;
     refTag = refTag.replaceAll(/[^\x00-\x7F]/g, "");
     // Remove everything that isn't ASCII from the string.
     for(asdf of ["~", "`", "!", "@", "#", "$", "%", "^", "&", "*", "(", ")", "_", "+", "-", "=", "{", "[", "}", "]", "|", "\\", ":", ";", '"', "'", "<", ",", ">", ".", "?", "/"]){
       refTag = refTag.replaceAll(asdf, " ");
     } // Strip out weird stuff that won't go into a ref template name.
-    
-    // No idea why the hell this ended up being a thing, but strip it out.
-    refTag = refTag.replaceAll("nbsp", "");
-    
+
     // Strip out multiple spaces.
     refTag = refTag.replaceAll("     ", " ");
     refTag = refTag.replaceAll("    ", " ");
@@ -360,7 +364,58 @@
         reffy += "&lt;!-- " + week + " --&gt;"
       }
     } // If spacing is enabled.
-    return reffy;
+    
+    // Other citation styles (not quite so demanding!)
+    
+    if (settings['style'] == 1) {
+      return reffy;
+    } // EN.WP
+    
+    if (settings['style'] == 2) {
+      if (title.slice(-1) != ".") {
+        title = title + ".";
+      } // Append period if it's not already ending with one.
+      if (npname.slice(-1) != ".") {
+        npname = npname + ",";
+      } // Append period if it's not already ending with one.
+      reffy = '“' + title + '” <em>' + npname + "</em> " + sdayd + " " + moshd + ". " + yeard + ", " + link + ". Accessed " + sdayt + " " + mosht + ". " + yeart + ".";
+      return reffy;
+    } // MLA9
+    
+    if (settings['style'] == 3) {
+      if (title.slice(-1) != ".") {
+        title = title + ".";
+      } // Append period if it's not already ending with one.
+      if (npname.slice(-1) != ".") {
+        npname = npname + ".";
+      } // Append period if it's not already ending with one.
+      reffy = "Newspapers.com. (" + yeard + ", " + molod + " " + sdayd + "). " + title + " <em>" + npname + "</em> Retrieved " + molot + " " + sdayt + ", " + yeart + ", from " + link + "."
+      return reffy;
+    } // APA7
+    
+    if (settings['style'] == 4) {
+      if (title.slice(-1) != ".") {
+        title = title + ".";
+      } // Append period if it's not already ending with one.
+      if (npname.slice(-1) != ".") {
+        npname = npname + ".";
+      } // Append period if it's not already ending with one.
+      reffy = '“' + title + '” <em>' + npname + "</em> " + molod + " " + sdayd + ", " + yeard + ". " + link + ".";
+      return reffy;
+    } // Chicago
+    
+    if (settings['style'] == 5) {
+      reffy = "@article{" + title.replaceAll(" ", "-") + "-" + yeard + ", ";
+      reffy += "title = {" + title + "} ";
+      reffy += "url = {" + link + "}, ";
+      reffy += "journal = {" + npname + "}, ";
+      reffy += "publisher = {Newspapers.com}, ";
+      reffy += "year = {" + yeard + "}, ";
+      reffy += "month = {" + moshd + "}, ";
+      reffy += "day = {" + sdayd + "} ";
+      reffy += "}"
+      return reffy;
+    } // BiBTeX
   }  
   
   
