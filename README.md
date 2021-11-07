@@ -4,6 +4,13 @@ This software is a [Greasemonkey](https://en.wikipedia.org/wiki/Greasemonkey) ex
 
 Here is what it does, and how to make it do those things.
 
+## Table of contents
+[Search page tools](#search-page)
+
+[Individual newspages and clippings](#individual-newspages-and-clippings)
+
+[Information about generated citations](#about-generated-citations)
+
 ## Search page
 ![A screenshot of the search-page menu.](/demo1.png)
 There are several buttons added to the search bar at the top of the page, which I will explain going from left to right.
