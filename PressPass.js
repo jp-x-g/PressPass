@@ -50,7 +50,10 @@
     var setHTML         = document.createElement ('div');
     setHTML.innerHTML   = '             \
       <div id="settingsBox">             \
-        <p><center>\
+        <p>\
+        <em><b>PressPass v2.1, by JPxG (<a href="https://github.com/jp-x-g/PressPass">https://github.com/jp-x-g/PressPass</a>)</b></em>\
+        <small><small><small><br /><em>&nbsp;&nbsp;&nbsp;Against all the ignorance and wickedness of the world burns fiercely the small torch of knowledge, freedom, and properly formatted citations.</em></small></small></small>\
+        <br />\
         <span style="font: monospace;">Citation&nbsp;style:</span>\
         <input type="radio" name="stylebox" id="stylebox1" value="st1">\
         EN.WP\
@@ -66,22 +69,21 @@
         <br />\
         <b>Settings&nbsp;for&nbsp;Wikipedia&nbsp;citation&nbsp;templates</b>\
         <br />\
-        Date&nbsp;format:\
-        <br /><input type="radio" name="datefbox" id="datefbox1" value="df1">\
-        1969-12-31&nbsp;(best: this is the international standard)\
-        <br /><input type="radio" name="datefbox" id="datefbox2" value="df2">\
-        31&nbsp;December&nbsp;1969\
-        <br /><input type="radio" name="datefbox" id="datefbox3" value="df3">\
-        31&nbsp;Dec&nbsp;1969\
-        <br /><input type="radio" name="datefbox" id="datefbox4" value="df4">\
-        Dec&nbsp;31,&nbsp;1969 (avoid if possible)\
-        <br /><input type="radio" name="datefbox" id="datefbox5" value="df5">\
-        December&nbsp;31,&nbsp;1969 (avoid if possible)\
-        <br />\
+        Date&nbsp;format:<br />\
+        &nbsp;&nbsp;&nbsp;<input type="radio" name="datefbox" id="datefbox1" value="df1">\
+        1969-12-31&nbsp;(best: this is the international standard)<br />\
+        &nbsp;&nbsp;&nbsp;<input type="radio" name="datefbox" id="datefbox2" value="df2">\
+        31&nbsp;December&nbsp;1969<br />\
+        &nbsp;&nbsp;&nbsp;<input type="radio" name="datefbox" id="datefbox3" value="df3">\
+        31&nbsp;Dec&nbsp;1969<br />\
+        &nbsp;&nbsp;&nbsp;<input type="radio" name="datefbox" id="datefbox4" value="df4">\
+        Dec&nbsp;31,&nbsp;1969 (avoid if possible)<br />\
+        &nbsp;&nbsp;&nbsp;<input type="radio" name="datefbox" id="datefbox5" value="df5">\
+        December&nbsp;31,&nbsp;1969 (avoid if possible)<br />\
         <br />\
         Optional&nbsp;parameters:\
         <br />\
-        <input type="checkbox" name="setbox1" value="sb1"> <span style="font-family: monospace">access-date</span>\
+        &nbsp;&nbsp;&nbsp;<input type="checkbox" name="setbox1" value="sb1"> <span style="font-family: monospace">access-date</span>\
         <input type="checkbox" name="setbox2" value="sb2"> <span style="font-family: monospace">via</span>\
         <input type="checkbox" name="setbox3" value="sb3"> weekday (as hidden note)\
         <br />\
@@ -102,19 +104,19 @@
         <br />\
         <br />\
         Ref name style:<br />\
-        <input type="radio" name="lengthbox" id="lengthbox1" value="lg1">\
+        &nbsp;&nbsp;&nbsp;<input type="radio" name="lengthbox" id="lengthbox1" value="lg1">\
         <span style="font-family: monospace">&lt;ref name="Wetu691231"&gt;</span><br />\
-        <input type="radio" name="lengthbox" id="lengthbox2" value="lg2">\
+        &nbsp;&nbsp;&nbsp;<input type="radio" name="lengthbox" id="lengthbox2" value="lg2">\
         <span style="font-family: monospace">&lt;ref name="Wetump19691231p7"&gt;</span><br />\
-        <input type="radio" name="lengthbox" id="lengthbox3" value="lg3">\
+        &nbsp;&nbsp;&nbsp;<input type="radio" name="lengthbox" id="lengthbox3" value="lg3">\
         <span style="font-family: monospace">&lt;ref name="WetumpkaAr 1969-12-31 p7"&gt;</span><br />\
-        <input type="radio" name="lengthbox" id="lengthbox4" value="lg4">\
+        &nbsp;&nbsp;&nbsp;<input type="radio" name="lengthbox" id="lengthbox4" value="lg4">\
         <span style="font-family: monospace">&lt;ref name="WetumpkaArgusPi 1969-12-31 p7"&gt;</span><br />\
-        <input type="radio" name="lengthbox" id="lengthbox5" value="lg5">\
+        &nbsp;&nbsp;&nbsp;<input type="radio" name="lengthbox" id="lengthbox5" value="lg5">\
         <span style="font-family: monospace">&lt;ref name="The Wetumpka Argus-Picayune Weekly 1969-12-31 p7"&gt;</span><br />\
         <br />\
         <b>To close and save configuration, click the "settings" button again.</b>\
-        </center></p>      \
+        </p>      \
       </div>                          \
       ';
   
@@ -428,12 +430,12 @@
     newHTML.innerHTML   = '             \
       <div id="gmSomeID">             \
         <p><center>\
-        &nbsp; &nbsp;Auto:&nbsp;<button type="button" id="clickButton" class="clbutton"><small>click</small></button><button type="button" id="scrollButton" class="scrollButton"><small>scroll</small></button> \
-        Select:&nbsp;<button type="button" id="saButton" class="sabutton"><small>all</small></button><button type="button" id="snButton" class="snbutton"><small>none</small></button> \
-        Cites:&nbsp;<button type="button" id="scrapeButton" class="scbutton"><small>make</small></button><button type="button" id="clearButton" class="clbutton"><small>clear</small></button> \
-        New&nbsp;tab:&nbsp;<button type="button" id="openallButton" class="oabutton"><small>selected</small></button><button type="button" id="openeveryButton" class="oebutton"><small>all</small></button> \
-        Links:&nbsp;<button type="button" id="newspageButton" class="npbutton"><small><small>&nbsp;&nbsp;&nbsp;image</small></small></button>\
-        &nbsp;<button type="button" id="settingsButton" class="stbutton"><small>Settings</small></button>\
+        &nbsp; &nbsp;Auto:&nbsp;<button type="button" id="clickButton" class="clbutton">click</button><button type="button" id="scrollButton" class="scrollButton">scroll</button> \
+        Select:&nbsp;<button type="button" id="saButton" class="sabutton">all</button><button type="button" id="snButton" class="snbutton">none</button> \
+        Cites:&nbsp;<button type="button" id="scrapeButton" class="scbutton">make</button><button type="button" id="clearButton" class="clbutton">clear</button> \
+        New&nbsp;tab:&nbsp;<button type="button" id="openallButton" class="oabutton"><small>selected</small></button><button type="button" id="openeveryButton" class="oebutton">all</button> \
+        Links:&nbsp;<button type="button" id="newspageButton" class="npbutton"><small>&nbsp;&nbsp;&nbsp;image</small></button> \
+        &nbsp;Config:&nbsp;<button type="button" id="settingsButton" class="stbutton">settings</button>\
         </center></p>      \
       </div>                          \
       ';
@@ -457,16 +459,16 @@
      document.getElementById("settingsButton").addEventListener("click", settingsToggle);
     // Add listeners, so that all of the buttons actually do something.
     
-        document.getElementById("clickButton").style = "font-family: monospace; padding: 1px 1px 1px 1px";
-       document.getElementById("scrollButton").style = "font-family: monospace; padding: 1px 1px 1px 1px";
-           document.getElementById("saButton").style = "font-family: monospace; padding: 1px 1px 1px 1px";
-           document.getElementById("snButton").style = "font-family: monospace; padding: 1px 1px 1px 1px";
-       document.getElementById("scrapeButton").style = "font-family: monospace; padding: 1px 1px 1px 1px";
-        document.getElementById("clearButton").style = "font-family: monospace; padding: 1px 1px 1px 1px";
-      document.getElementById("openallButton").style = "font-family: monospace; padding: 1px 1px 1px 1px";
-    document.getElementById("openeveryButton").style = "font-family: monospace; padding: 1px 1px 1px 1px";
-     document.getElementById("newspageButton").style = "font-family: monospace; padding: 1px 1px 1px 1px";
-     document.getElementById("settingsButton").style = "font-family: monospace; padding: 1px 1px 1px 1px";
+        document.getElementById("clickButton").style = "font-family: monospace; padding: 1px 1px 1px 1px; width: 5em; font-size:75%";
+       document.getElementById("scrollButton").style = "font-family: monospace; padding: 1px 1px 1px 1px; width: 5em; font-size:75%";
+           document.getElementById("saButton").style = "font-family: monospace; padding: 1px 1px 1px 1px; width: 5em; font-size:75%";
+           document.getElementById("snButton").style = "font-family: monospace; padding: 1px 1px 1px 1px; width: 5em; font-size:75%";
+       document.getElementById("scrapeButton").style = "font-family: monospace; padding: 1px 1px 1px 1px; width: 5em; font-size:75%";
+        document.getElementById("clearButton").style = "font-family: monospace; padding: 1px 1px 1px 1px; width: 5em; font-size:75%";
+      document.getElementById("openallButton").style = "font-family: monospace; padding: 1px 1px 1px 1px; width: 5em; font-size:75%";
+    document.getElementById("openeveryButton").style = "font-family: monospace; padding: 1px 1px 1px 1px; width: 5em; font-size:75%";
+     document.getElementById("newspageButton").style = "font-family: monospace; padding: 1px 1px 1px 1px; width: 5em; font-size:75%";
+     document.getElementById("settingsButton").style = "font-family: monospace; padding: 1px 1px 1px 1px; width: 7em; font-size:75%";
     // Set formatting for the buttons.
     
     var scrollHTML         = document.createElement ('div');
@@ -493,7 +495,7 @@
     
     function toggleLinks() {
       if (newspageToggle == 0) {
-        document.getElementById("newspageButton").innerHTML = "<small><small>newspage</small></small>";
+        document.getElementById("newspageButton").innerHTML = "<small>newspage</small>";
         var l = document.links;
         for(var i=0; i<l.length; i++) {
           l[i].href = String(l[i].href).replace("/image/", "/newspage/");
@@ -501,7 +503,7 @@
       } // If we're setting it to "newspage".
       
       if (newspageToggle == 1) {
-        document.getElementById("newspageButton").innerHTML = "<small><small>&nbsp;&nbsp;&nbsp;image</small></small>";
+        document.getElementById("newspageButton").innerHTML = "<small>&nbsp;&nbsp;&nbsp;image</small>";
         var l = document.links;
         for(var i=0; i<l.length; i++) {
           l[i].href = String(l[i].href).replace("/newspage/", "/image/");
@@ -514,13 +516,13 @@
     function autoClick() {
       if (autoClickOn == 0){
         intervalID = setInterval(clickOnTheButton, 500);
-        document.getElementById("clickButton").style = "font-family: monospace; padding: 1px 1px 1px 1px; color:red";
-        document.getElementById("clickButtonb").style = "font-family: monospace; padding: 1px 1px 1px 1px; color:red";
+        document.getElementById("clickButton").style = "font-family: monospace; padding: 1px 1px 1px 1px; width: 5em; font-size:75%; color:red";
+        document.getElementById("clickButtonb").style = "font-family: monospace; padding: 1px 1px 1px 1px; width: 5em; font-size:75%; color:red";
       }
       if (autoClickOn == 1){
         clearInterval(intervalID);
-        document.getElementById("clickButton").style = "font-family: monospace; padding: 1px 1px 1px 1px";
-        document.getElementById("clickButtonb").style = "ffont-family: monospace; padding: 1px 1px 1px 1px";
+        document.getElementById("clickButton").style = "font-family: monospace; padding: 1px 1px 1px 1px; width: 5em; font-size:75%";
+        document.getElementById("clickButtonb").style = "ffont-family: monospace; padding: 1px 1px 1px 1px; width: 5em; font-size:75%";
       }
       // If this is 0, yields 1. If this is 1, yields 0.
       autoClickOn = 1 - autoClickOn;
@@ -535,14 +537,14 @@
     function autoScroll() {
       if (autoScrollOn == 0){
         intervalScroll = setInterval(scrollOnTheScreen, 50);
-        document.getElementById("scrollButton").style = "font-family: monospace; padding: 1px 1px 1px 1px; color:red";
-        document.getElementById("scrollButtonb").style = "font-family: monospace; padding: 1px 1px 1px 1px; color:red";
+        document.getElementById("scrollButton").style = "font-family: monospace; padding: 1px 1px 1px 1px; width: 5em; font-size:75%; color:red";
+        document.getElementById("scrollButtonb").style = "font-family: monospace; padding: 1px 1px 1px 1px; width: 5em; font-size:75%; color:red";
         window.scrollBy(0,500);
       }
       if (autoScrollOn == 1){
         clearInterval(intervalScroll);
-        document.getElementById("scrollButton").style = "font-family: monospace; padding: 1px 1px 1px 1px";
-        document.getElementById("scrollButtonb").style = "font-family: monospace; padding: 1px 1px 1px 1px";
+        document.getElementById("scrollButton").style = "font-family: monospace; padding: 1px 1px 1px 1px; width: 5em; font-size:75%";
+        document.getElementById("scrollButtonb").style = "font-family: monospace; padding: 1px 1px 1px 1px; width: 5em; font-size:75%";
       }
       // If this is 0, yields 1. If this is 1, yields 0.
       autoScrollOn = 1 - autoScrollOn;
@@ -862,13 +864,13 @@
     var clipSetHTML         = document.createElement ('div');
     clipSetHTML.innerHTML   = '                                                                                    \
       <div id="gmSomeID">                                                                                          \
-        &nbsp;<button type="button" id="settingsButton" class="stbutton"><small>PressPass settings</small></button>\
+        &nbsp;<button type="button" id="settingsButton" class="stbutton">PressPass settings</button>\
       </div>                                                                                                       \
       ';  
     // Set the HTML for the settings button.
     document.getElementsByClassName("clear pe")[0].appendChild(clipSetHTML);  
     // Add to the header.
-    document.getElementById("settingsButton").style = "font-family: monospace; padding: 1px 1px 1px 1px";
+    document.getElementById("settingsButton").style = "font-family: monospace; padding: 1px 1px 1px 1px; width: 7em; font-size:75%";
     // Format the button.
     document.getElementById("settingsButton").addEventListener("click", settingsToggle);
     // Add an event listener to show/hide settings when you click da freakin button.   
