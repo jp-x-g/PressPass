@@ -205,9 +205,15 @@ This is fairly self-explanatory. Some people prefer short ref names that don't c
 PressPass is a browser script, which means that it should run fine whether you are on Micro$oft Windows, OS X, GNU/Linux, FreeBSD, OpenIndiana Hipster, or whatever.
 
 ### Firefox
-Installing PressPass requires the wonderful open-source software "[Greasemonkey](https://en.wikipedia.org/wiki/Greasemonkey)", an add-on which can be installed from Mozilla's website [here](https://addons.mozilla.org/en-US/firefox/addon/greasemonkey/).
+Installing PressPass requires the wonderful open-source software "[Greasemonkey](https://en.wikipedia.org/wiki/Greasemonkey)", an add-on which can be installed from Mozilla's website [here](https://addons.mozilla.org/en-US/firefox/addon/greasemonkey/). It seems like it's also possible to use "[Tampermonkey](https://www.tampermonkey.net/index.php?ext=dhdg&browser=firefox)", but I don't know if this will work.
 
-After you have installed GreaseMonkey, create a new userscript from the Greasemonkey menu, like this:
+After you have installed some sort of monkey, you can either install the script manually or automatically.
+
+#### Automatic installation
+Click [here](https://raw.githubusercontent.com/jp-x-g/PressPass/main/PressPass.user.js). A Greasemonkey window should pop up, asking if you want to install the script. If you click "yes", you will install it.
+
+#### Manual installation
+Create a new userscript from the Greasemonkey menu, like this:
 
 ![A screenshot of the Greasemonkey menu, with "new userscript" highlighted.](/images/demo7.png)
 
@@ -215,13 +221,15 @@ Then, you will be taken to a page that looks like this:
 
 ![A screenshot of a blank new Greasemonkey script.](/images/demo8.png)
 
-The raw source code for this script can be found [here](https://raw.githubusercontent.com/jp-x-g/PressPass/main/PressPass.js). Copy all of that, and paste it into the blank userscript (replacing the placeholder text that's already there). Congratulations, you has a PressPass.
+The raw source code for this script can be found [here](https://raw.githubusercontent.com/jp-x-g/PressPass/main/PressPass.user.js). Copy all of that, and paste it into the blank userscript (replacing the placeholder text that's already there). Congratulations, you has a PressPass.
 
 ### Chrome
-For Chrome, there is a closed-source application called "[Tampermonkey](https://en.wikipedia.org/wiki/Tampermonkey)", which serves the same purpose as Greasemonkey, and can be installed from the Chrome web store [here](https://chrome.google.com/webstore/detail/tampermonkey/dhdgffkkebhmkfjojejmpbldmpobfkfo?hl=en). When testing this, I was unable to get it to work; some more research may be needed.
+For Chrome, there is a closed-source application by Jan Biniok named "[Tampermonkey](https://en.wikipedia.org/wiki/Tampermonkey)" (homepage [here](https://www.tampermonkey.net/)), which serves the same purpose as Greasemonkey, and can be installed from the Chrome web store [here](https://chrome.google.com/webstore/detail/tampermonkey/dhdgffkkebhmkfjojejmpbldmpobfkfo?hl=en).
+
+The same steps apply as for the Firefox version, except without the part where it works. I don't know why it doesn't work on Chrome. I will have to figure this out.
 
 ### Microsoft Edge
-It looks like there is a version of Tampermonkey for Edge [here](https://microsoftedge.microsoft.com/addons/detail/tampermonkey/iikmkjmpaadaobahmlepeloendndfphd)-->, although I don't know anything about it.
+It looks like there is a version of Tampermonkey for Edge [here](https://microsoftedge.microsoft.com/addons/detail/tampermonkey/iikmkjmpaadaobahmlepeloendndfphd), although I don't know anything about it.
 
 ### Safari
 I hear there is something called "GreaseKit", but I don't know much about Safari.
