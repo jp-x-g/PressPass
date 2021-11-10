@@ -1,5 +1,5 @@
-![Hello!](/logo.png)
-*Manually typing out citation templates for newspapers? Just because the newspaper is from 1890 doesn't mean your editing process has to be.*
+![Hello!](/images/logo.png)
+Manually typing out citation templates for newspapers? Just because the newspaper is from 1890 doesn't mean your editing process has to be.*
 
 This software is a [Greasemonkey](https://en.wikipedia.org/wiki/Greasemonkey) extension adding features to [Newspapers.com](https://newspapers.com), which work for subscribers as well as free users. It gives you a few very powerful tools on the search page, as well as for individual clippings. In my opinion, if you use Newspapers.com to write Wikipedia articles and you don't use this script, you're wasting your time on this planet. 
 
@@ -46,7 +46,9 @@ Here is what it does, and how to make it do those things.
 
 
 ## Search page
-![A screenshot of the search-page menu.](/demo1.png)
+> [back to top](#table-of-contents)
+
+![A screenshot of the search-page menu.](/images/demo1.png)
 There are several buttons added to the search bar at the top of the page, which I will explain going from left to right.
 
 ### "Auto"
@@ -81,6 +83,7 @@ If you're a subscriber, this is probably what you want: these give you the scan 
 If you do not have a subscription, you should go to these pages instead: they are formatted differently from the image pages, and will provide you with an [OCR](https://en.wikipedia.org/wiki/Optical_character_recognition) scan of the article's text, *even if you don't have an account on the site*. This can also be useful if you want to use a blockquote from a newspaper. Take caution, however. Especially on older newspapers, OCR can be total gibberish, or worse: seemingly accurate, but with messed-up numbers and names!
 
 ## Individual newspages
+> [back to top](#table-of-contents)
 
 This is the simplest feature of the program to use, but in my opinion, it is the best and most useful. While it's possible to generate citations from the search page, these are worse: they don't have specific clipping links, and they don't have article titles (since this information is impossible to get without going to the newspage). Using PressPass to generate clipping citations allows you to fix both of these problems with virtually no effort. All you do is generate a clipping. If you type out the headline as the name of the clipping, this is a lot easier, but it works either way (you just have to manually type the headline into the citation).
 
@@ -89,25 +92,28 @@ Then you click "**copy**" from the social media sharing popup (if you've disable
 
 It's easy as hell:
 
-![A screenshot of the newspage page, while making a clipping.](/demo2.jpg)
+![A screenshot of the newspage page, while making a clipping.](/images/demo2.jpg)
 Open the page (using the "image" link setting). It will look like this. You may have to scrounge around and figure out which specific part of the page is the article you want: then click the "clip" button.
-![A screenshot of the newspage page, while making a clipping.](/demo3.jpg)
+![A screenshot of the newspage page, while making a clipping.](/images/demo3.jpg)
 Drag the rectangle around and size it to fit over your article. Type in the headline as the clipping title (you can type in anything you want, of course, but this greatly reduces the amount of work you have to do).
-![A screenshot of the newspage page, while making a clipping.](/demo4.jpg)
+![A screenshot of the newspage page, while making a clipping.](/images/demo4.jpg)
 By default, this social media sharing popup window is enabled whenever you make a clipping. You probably disabled it because it's annoying -- but you're about to see how based it can be.
-![A screenshot of the newspage page, while making a clipping.](/demo5.jpg)
+![A screenshot of the newspage page, while making a clipping.](/images/demo5.jpg)
 When you click the "copy" button, it will generate a properly formatted citation, with the clipping URL automatically included, and put that in your clipboard. It will also show it in the sharing box, so you can check to see if you messed up.
 
 ## Clippings
+> [back to top](#table-of-contents)
 
 This one is automatic. Whenever you view a page for an individual clipping, a citation will be automatically generated in the lower right sidebar, below the clipping information. It will use whatever settings are specified; if you want to change these, click the "PressPass settings" button and change them. The citation on the page will update automatically.
 
-![A screenshot of the clipping page.](/demo-clippingpage.jpg)
+![A screenshot of the clipping page.](/images/demo-clippingpage.jpg)
 
 ## Settings and configuration
+> [back to top](#table-of-contents)
+
 The software's behavior when generating citations can be changed from the settings menu, as seen below (accessible on both search pages and clipping pages).
 
-![A screenshot of the settings menu, from the clipping page.](/demo6.jpg)
+![A screenshot of the settings menu, from the clipping page.](/images/demo6.jpg)
 
 ### Citation styles
 
@@ -194,6 +200,8 @@ Examples of source code generated from the four available settings can be seen b
 This is fairly self-explanatory. Some people prefer short ref names that don't clutter up article text, whereas some people prefer long ref names that easily distinguish one source from another. Styles 1 through 4 abbreviate the name of the publication (to 4, 6, 10 and 15 characters respectively); Style 5 includes the full name of the publication (no matter how long it is).
 
 ## Installation
+> [back to top](#table-of-contents)
+
 PressPass is a browser script, which means that it should run fine whether you are on Micro$oft Windows, OS X, GNU/Linux, FreeBSD, OpenIndiana Hipster, or whatever.
 
 ### Firefox
@@ -201,11 +209,11 @@ Installing PressPass requires the wonderful open-source software "[Greasemonkey]
 
 After you have installed GreaseMonkey, create a new userscript from the Greasemonkey menu, like this:
 
-![A screenshot of the Greasemonkey menu, with "new userscript" highlighted.](/demo7.png)
+![A screenshot of the Greasemonkey menu, with "new userscript" highlighted.](/images/demo7.png)
 
 Then, you will be taken to a page that looks like this:
 
-![A screenshot of a blank new Greasemonkey script.](/demo8.png)
+![A screenshot of a blank new Greasemonkey script.](/images/demo8.png)
 
 The raw source code for this script can be found [here](https://raw.githubusercontent.com/jp-x-g/PressPass/main/PressPass.js). Copy all of that, and paste it into the blank userscript (replacing the placeholder text that's already there). Congratulations, you has a PressPass.
 
@@ -225,6 +233,8 @@ There's supposed to be a Tampermonkey extension for Opera. Who knows.
 Apparently, all Chrome extensions work in Brave, which means you can install Tampermonkey in it. Some more information about adding extensions to Brave can be found [here](https://support.brave.com/hc/en-us/articles/360017909112-How-can-I-add-extensions-to-Brave-).
 
 ## Shortcomings and things to watch out for
+> [back to top](#table-of-contents)
+
 ### Author names
 The names of authors are often not included in newspaper articles, and they are not encoded into Newspapers.com metadata. Accordingly, there is no way to include them in automatically-generated citations; they must be typed in manually if they are to be included at all.
 ### Julian-Gregorian date ambiguity
