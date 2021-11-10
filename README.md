@@ -17,8 +17,10 @@ Here is what it does, and how to make it do those things.
 
 > [Auto-open in new tab](#new-tab)
 
-**[Individual newspages and clippings](#individual-newspages-and-clippings)**
-> [Generate citations](#individual-newspages-and-clippings)
+**[Individual newspages](#individual-newspages)**
+> [Generate citations](#individual-newspages)
+
+**[Clippings](#clippings)**
 
 **[Settings and configuration](#settings-and-configuration)**
 > [Citation styles](#citation-styles)
@@ -78,7 +80,7 @@ If you're a subscriber, this is probably what you want: these give you the scan 
 #### Newspage
 If you do not have a subscription, you should go to these pages instead: they are formatted differently from the image pages, and will provide you with an [OCR](https://en.wikipedia.org/wiki/Optical_character_recognition) scan of the article's text, *even if you don't have an account on the site*. This can also be useful if you want to use a blockquote from a newspaper. Take caution, however. Especially on older newspapers, OCR can be total gibberish, or worse: seemingly accurate, but with messed-up numbers and names!
 
-## Individual newspages and clippings
+## Individual newspages
 
 This is the simplest feature of the program to use, but in my opinion, it is the best and most useful. While it's possible to generate citations from the search page, these are worse: they don't have specific clipping links, and they don't have article titles (since this information is impossible to get without going to the newspage). Using PressPass to generate clipping citations allows you to fix both of these problems with virtually no effort. All you do is generate a clipping. If you type out the headline as the name of the clipping, this is a lot easier, but it works either way (you just have to manually type the headline into the citation).
 
@@ -95,6 +97,12 @@ Drag the rectangle around and size it to fit over your article. Type in the head
 By default, this social media sharing popup window is enabled whenever you make a clipping. You probably disabled it because it's annoying -- but you're about to see how based it can be.
 ![A screenshot of the newspage page, while making a clipping.](/demo5.jpg)
 When you click the "copy" button, it will generate a properly formatted citation, with the clipping URL automatically included, and put that in your clipboard. It will also show it in the sharing box, so you can check to see if you messed up.
+
+## Clippings
+
+This one is automatic. Whenever you view a page for an individual clipping, a citation will be automatically generated in the lower right sidebar, below the clipping information. It will use whatever settings are specified; if you want to change these, click the "PressPass settings" button and change them. The citation on the page will update automatically.
+
+![A screenshot of the clipping page.](/demo-clippingpage.jpg)
 
 ## Settings and configuration
 The software's behavior when generating citations can be changed from the settings menu, as seen below (accessible on both search pages and clipping pages).
