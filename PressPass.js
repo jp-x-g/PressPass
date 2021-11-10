@@ -21,7 +21,9 @@
     "length":   1
   };
   // Default settings.
-  
+    
+  var variable;
+  var settings;
   
   async function loadSettings(varDefault) {
     variable = await GM.getValue("pressPassConfig", JSON.stringify(varDefault));
@@ -203,7 +205,7 @@
       //npname = npname.substring(0, npname.length - 1);
     //} // Sometimes this happens, I suppose.
     
-    refTag = npname;
+    var refTag = npname;
     refTag = refTag.replaceAll(/[^\x00-\x7F]/g, "");
     // Remove everything that isn't ASCII from the string.
     for(asdf of ["~", "`", "!", "@", "#", "$", "%", "^", "&", "*", "(", ")", "_", "+", "-", "=", "{", "[", "}", "]", "|", "\\", ":", ";", '"', "'", "<", ",", ">", ".", "?", "/"]){
@@ -223,7 +225,7 @@
     } // Trim spaces from the newspaper name, unless "enormously long ref tags" option is set.
     
     // Now we ensure that the dreaded "leading digit in a MediaWiki reference name" issue does not come up.
-    for(asdf of ["1", "2", "3", "4", "5", "6", "7", "8", "9", "0"]){
+    for(var asdf of ["1", "2", "3", "4", "5", "6", "7", "8", "9", "0"]){
       if(refTag.substr(0,1) == asdf){
         refTag = "n" + refTag.substr(1);
       } // If a number is the first character of the string, replace it with something. How about "n", for "newspaper".
@@ -301,7 +303,7 @@
     }      
     
     // Compose an actual citation to return.
-    reffy = "";
+    var reffy = "";
     var ml = settings['multi'];
     // if (ml == 1) { reffy += "<br />"; }
     if (settings['spacing'] == 0) {
@@ -419,9 +421,10 @@
       return reffy;
     } // BiBTeX
   }  
-  
-  
-  
+      
+  ////////////////////////////////////////////////////////////////////////////////////////////////////
+  // What to do if it's a "search" page is below.
+  ////////////////////////////////////////////////////////////////////////////////////////////////////
   
   if (window.location.href.indexOf("newspapers.com/search/") >= 0){
     // If we're on a search page at newspapers.com
@@ -504,15 +507,16 @@
       
       if (newspageToggle == 1) {
         document.getElementById("newspageButton").innerHTML = "<small>&nbsp;&nbsp;&nbsp;image</small>";
-        var l = document.links;
-        for(var i=0; i<l.length; i++) {
-          l[i].href = String(l[i].href).replace("/newspage/", "/image/");
+        var li = document.links;
+        for(var ii=0; i<li.length; ii++) {
+          li[ii].href = String(li[ii].href).replace("/newspage/", "/image/");
         } // For each link in the page.
       } // If we're setting it to "image".
       newspageToggle = 1 - newspageToggle;
       // Invert the toggle.
     }
     
+      var intervalID;
     function autoClick() {
       if (autoClickOn == 0){
         intervalID = setInterval(clickOnTheButton, 500);
@@ -533,7 +537,9 @@
     } // Love to define an entire function to call from the setInterval which I'm defining as a variable inside another function
       // That's sarcasm, actually. I don't "love to" do this. But I have to.
       // called from the click listener, to execute one line of code.  
-       
+    
+    var intervalScroll;
+      
     function autoScroll() {
       if (autoScrollOn == 0){
         intervalScroll = setInterval(scrollOnTheScreen, 50);
@@ -662,7 +668,7 @@
     } // Function to clear all cites from the bottom.
     
     function scrapeLinks() {
-      stringToPrint = ""
+      var stringToPrint = ""
       var incrementor = 0;
       // This will get the whole "search-record", which includes the image to the left as well.
       // Seems to work perfectly fine either way, without having to rewrite any code.
@@ -719,7 +725,7 @@
           
           
           //alert(match);
-          lastSpan = as[asdf].getElementsByTagName('span').length;
+          var lastSpan = as[asdf].getElementsByTagName('span').length;
           var aDate = String(as[asdf].getElementsByTagName('span')[lastSpan - 1].innerHTML);
           // The date ("Sunday, October 07, 2007") is the third "span" in this block of HTML - unless there's that premium icon.
           // To avoid stupidity, we're going to just take the last span in the whole block, rather than "2" or "3".
@@ -853,9 +859,82 @@
   } // End of what to do if it's a newspapers search page.
   
   
+    
+  ////////////////////////////////////////////////////////////////////////////////////////////////////
+  // What to do if it's a "clipping" page is below.
+  ////////////////////////////////////////////////////////////////////////////////////////////////////
+  
+ 
+  if (window.location.href.indexOf("newspapers.com/clip/") > 0){
+    function generateFromClip(){
+      var cliplink = window.location.href;
+      var cliptitl = document.getElementById("spotTitle").innerHTML;
+      var clipdate = document.querySelector('[itemprop=dateCreated]').innerHTML;
+      var clippage = document.querySelector('[itemprop=position]').innerHTML;
+      var clipname = document.getElementsByClassName("paper-title")[0].innerHTML;
+      var clipcity = document.getElementsByClassName("text-dark")[0].innerHTML;
+      
+      var parsedDy = clipdate.substr(0,2);
+      //alert(parsedDy);
+      var parsedYr = clipdate.substr(7,4);
+      //alert(parsedYr);
+      var parsedWk = clipdate.substr(13,3);
+      //alert(parsedWk);
+      var parsedMn = "FOO";
+      var months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+      for(var asdf in months) {
+        if (clipdate.indexOf(months[asdf]) >= 0){ 
+          // Take the incrementor and store it as the month.
+          // Remember to add one, or you are a bozo!
+          parsedMn = "00" + String(parseInt(asdf)+1);
+          parsedMn = parsedMn.slice(-2);
+        } // If it actually finds the darn thing.
+       } // For every month.
+      clipdate = parsedYr + "-" + parsedMn + "-" + parsedDy
+        
+      clippage = clippage.replaceAll("Page ","");
+      
+      var citeString = composeCitation(cliplink, clipdate, clippage, cliptitl, clipname, clipcity, parsedWk);
+      
+      //alert(citeString);
+      
+
+      var citehtml = document.createElement('div');
+      citehtml.innerHTML   = '<div id="renderedCiteID" style="font-size: 75%"><br />' + citeString + '</div>';  
+      if(!document.getElementById("renderedCiteID")) { 
+        document.getElementsByClassName("col-right-line")[0].appendChild(citehtml);  
+      } else {
+        document.getElementById("renderedCiteID").innerHTML = citeString;
+      } // If it's already there, change it instead of adding it.
+      
+      
+    } // Close definition for generateFromClip()
+   
+    var clippingSetHTML = document.createElement ('div');
+    clippingSetHTML.innerHTML   = '                                                                                    \
+      <div id="gmSomeID">                                                                                          \
+        &nbsp;<button type="button" id="settingsButton" class="stbutton">PressPass settings</button>               \
+        &nbsp;<button type="button" id="generateButton" class="stbutton">Generate citation</button>              \
+      </div>                                                                                                       \
+      ';  
+    // Set the HTML for the settings button.
+    document.getElementsByClassName("clear pe")[0].appendChild(clippingSetHTML);  
+    // Add to the header.
+    document.getElementById("settingsButton").style = "font-family: monospace; padding: 1px 1px 1px 1px; width: 7em; font-size:75%";
+    document.getElementById("generateButton").style = "font-family: monospace; padding: 1px 1px 1px 1px; width: 7em; font-size:75%";
+    // Format the button.
+    document.getElementById("settingsButton").addEventListener("click", settingsToggle);
+    document.getElementById("generateButton").addEventListener("click", generateFromClip);
+  
+    var intervalAddCite = setTimeout(generateFromClip, 1500);
+    // Generate a citation automatically when the page loads, instead of waiting for the user to click.
+  
+  } // Close block for what to do if it's a "clipping" page.  
   
   
-  
+  ////////////////////////////////////////////////////////////////////////////////////////////////////
+  // What to do if it's an "image" page is below.
+  ////////////////////////////////////////////////////////////////////////////////////////////////////
   
   
   
@@ -926,7 +1005,7 @@
      //alert(parsedWk);
      var parsedMn = "FOO";
      var months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-     for(asdf in months) {
+     for(var asdf in months) {
       if (clipdate.indexOf(months[asdf]) >= 0){ 
         // Take the incrementor and store it as the month.
         // Remember to add one, or you are a bozo!
@@ -968,7 +1047,7 @@
      // citeString += "&lt;!-- " + parsedWk + " --&gt;"
 
      // Use compositing function defined elsewhere.
-     citeString = composeCitation(cliplink, clipdate, clippage, cliptitl, clipname, clipcity, parsedWk);
+     var citeString = composeCitation(cliplink, clipdate, clippage, cliptitl, clipname, clipcity, parsedWk);
      // function composeCitation(link, date, page, title, npname, city, week) 
          
       
@@ -997,4 +1076,6 @@
     } // End of block for "if there's no autoCite block generated."
    } // autoCite function.
   } // End of what to do if it's an image page.
+  
+ 
 })(); // End of the line.
