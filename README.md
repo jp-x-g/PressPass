@@ -22,7 +22,7 @@ Here is what it does, and how to make it do those things.
 **[Settings and configuration](#settings-and-configuration)**
 > [Citation styles](#citation-styles)
 
-> [{{cite news}} customization](#Customization-of-wikipedia-citations)
+> [{{cite news}} customization](#customization-of-wikipedia-citations)
 
 **[Installation](#installation)**
 > [Firefox](#firefox)
@@ -36,6 +36,10 @@ Here is what it does, and how to make it do those things.
 > [Opera](#opera)
 
 > [Brave](#brave)
+
+> [Brave](#brave)
+
+**[Shortcomings and things to watch out for](#shortcomings-and-things-to-watch-out-for)**
 
 
 ## Search page
@@ -159,21 +163,21 @@ Examples of source code generated from the four available settings can be seen b
 
 > ``<ref name="Arizona Republic 1978-02-25 p7">{{Cite news``
 
-> `` &nbsp;| url &nbsp; &nbsp; &nbsp; &nbsp; = https://www.newspapers.com/clip/88492198/dems-in-disarray/``
+> ``  | url         = https://www.newspapers.com/clip/88492198/dems-in-disarray/``
 
-> `` &nbsp;| date &nbsp; &nbsp; &nbsp; &nbsp;= 1978-02-25``
+> ``  | date        = 1978-02-25``
 
-> `` &nbsp;| page &nbsp; &nbsp; &nbsp; &nbsp;= 7``
+> ``  | page        = 7``
 
-> `` &nbsp;| title &nbsp; &nbsp; &nbsp; = Dems In Disarray``
+> ``  | title       = Dems In Disarray``
 
-> `` &nbsp;| newspaper &nbsp; = Arizona Republic``
+> ``  | newspaper   = Arizona Republic``
 
-> `` &nbsp;| location &nbsp; &nbsp;= Phoenix, Arizona``
+> ``  | location    = Phoenix, Arizona``
 
-> `` &nbsp;| via &nbsp; &nbsp; &nbsp; &nbsp; = Newspapers.com``
+> ``  | via         = Newspapers.com``
 
-> `` &nbsp;| access-date = 2021-11-07``
+> ``  | access-date = 2021-11-07``
 
 > ``}}</ref><!-- Sat -->``
 
@@ -197,7 +201,7 @@ Then, you will be taken to a page that looks like this:
 The raw source code for this script can be found [here](https://raw.githubusercontent.com/jp-x-g/PressPass/main/PressPass.js). Copy all of that, and paste it into the blank userscript (replacing the placeholder text that's already there). Congratulations, you has a PressPass.
 
 ### Chrome
-I have not tried this yet. I think that what you need to install is a strange closed-source application called "[Tampermonkey](https://en.wikipedia.org/wiki/Tampermonkey)", which can be installed from the Chrome web store [here](https://chrome.google.com/webstore/detail/tampermonkey/dhdgffkkebhmkfjojejmpbldmpobfkfo?hl=en).
+For Chrome, there is a closed-source application called "[Tampermonkey](https://en.wikipedia.org/wiki/Tampermonkey)", which serves the same purpose as Greasemonkey, and can be installed from the Chrome web store [here](https://chrome.google.com/webstore/detail/tampermonkey/dhdgffkkebhmkfjojejmpbldmpobfkfo?hl=en). When testing this, I was unable to get it to work; some more research may be needed.
 
 ### Microsoft Edge
 It looks like there is a version of Tampermonkey for Edge [here](https://microsoftedge.microsoft.com/addons/detail/tampermonkey/iikmkjmpaadaobahmlepeloendndfphd)-->, although I don't know anything about it.
@@ -211,7 +215,7 @@ There's supposed to be a Tampermonkey extension for Opera. Who knows.
 ### Brave
 Apparently, all Chrome extensions work in Brave, which means you can install Tampermonkey in it. Some more information about adding extensions to Brave can be found [here](https://support.brave.com/hc/en-us/articles/360017909112-How-can-I-add-extensions-to-Brave-).
 
-## Shortcomings and flaws
+## Shortcomings and things to watch out for
 ### Author names
 The names of authors are often not included in newspaper articles, and they are not encoded into Newspapers.com metadata. Accordingly, there is no way to include them in automatically-generated citations; they must be typed in manually if they are to be included at all.
 ### Julian-Gregorian date ambiguity
