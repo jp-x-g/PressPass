@@ -148,12 +148,19 @@ Citation templates, in articles, will function the same way regardless of how mu
 
 Examples of source code generated from the four available settings can be seen below.
 **Single-line unspaced:**
-
-> ``<ref name="Arizona Republic 1978-02-25 p7">{{Cite news|url=https://www.newspapers.com/clip/88492222/dems-in-disarray/|date=1978-02-25|page=7|title=Dems in Disarray|newspaper=Arizona Republic|location=Phoenix, Arizona|via=Newspapers.com|access-date=2021-11-07}}</ref><!-- Sat -->``
+```
+<ref name="Arizona Republic 1978-02-25 p7">{{Cite news|url=https://www.newspapers.com/clip/88492222
+/dems-in-disarray/|date=1978-02-25|page=7|title=Dems in Disarray|newspaper=Arizona Republic|locatio
+n=Phoenix, Arizona|via=Newspapers.com|access-date=2021-11-07}}</ref><!-- Sat -->
+```
 
 **Single-line spaced:**
-
-> ``<ref name="Arizona Republic 1978-02-25 p7">{{Cite news  | url         = https://www.newspapers.com/clip/88492198/dems-in-disarray/  | date        = 1978-02-25  | page        = 7  | title       = Dems In Disarray  | newspaper   = Arizona Republic  | location    = Phoenix, Arizona  | via         = Newspapers.com  | access-date = 2021-11-07}}</ref><!-- Sat -->``
+```
+<ref name="Arizona Republic 1978-02-25 p7">{{Cite news  | url         = https://www.newspapers.com/
+clip/88492198/dems-in-disarray/  | date        = 1978-02-25  | page        = 7  | title       = Dem
+s In Disarray  | newspaper   = Arizona Republic  | location    = Phoenix, Arizona  | via         = 
+Newspapers.com  | access-date = 2021-11-07}}</ref><!-- Sat -->
+```
 
 **Multiple-line unspaced:**
 ```
