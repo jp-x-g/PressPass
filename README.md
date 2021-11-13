@@ -147,6 +147,7 @@ By default, all of these are enabled; they are not strictly required, and can be
 Citation templates, in articles, will function the same way regardless of how much spacing is in the source code. While they are typically written out on one line, they don't *need* to be, and are often split across multiple lines to be easily edited, or spaced out for readability. There are four options here; note that, as with the formatted text in academic citations, these will need to be manually copied from the text above the "copy" box in the share window to work properly.
 
 Examples of source code generated from the four available settings can be seen below.
+
 **Single-line unspaced:**
 ```
 <ref name="Arizona Republic 1978-02-25 p7">{{Cite news|url=https://www.newspapers.com/clip/88492222
