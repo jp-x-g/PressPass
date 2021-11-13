@@ -144,7 +144,7 @@ By default, all of these are enabled; they are not strictly required, and can be
 "Weekday" will include an HTML note indicating which day of the week the newspaper was published on. This is not a part of the citation template, but is available for convenience in writing articles: in a tacit acknowledgement of their ephemeral relevance and planned obsolescence as artifacts of [Spectacle](https://en.wikipedia.org/wiki/Spectacle_&28critical_theory%29), newspapers have been saying stuff happened "last Thursday" for several hundred years, and it is often useful to know the specific day some event happened.
 
 #### Spacing
-Citation templates, in articles, will function the same way regardless of how much spacing is in the source code. While they are typically written out on one line, they don't *need* to be, and are often split across multiple lines to be easily edited, or spaced out for readability. There are four options here; note that, as with the formatted text in academic citations, these will need to be manually copied from the text above the "copy" box in the share window to work properly.
+Citation templates, in articles, will function the same way regardless of how much spacing is in the source code. While they are typically written out on one line, they don't *need* to be, and are often split across multiple lines to be easily edited, or spaced out for readability. There are four options here; note that, as with the formatted text in academic citations, the two multi-line variants will need to be manually copied from the text above the "copy" box in the share window to work properly.
 
 Examples of source code generated from the four available settings can be seen below.
 
