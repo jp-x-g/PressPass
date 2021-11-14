@@ -1,6 +1,7 @@
 <p align="center">
-	<img src="https://raw.githubusercontent.com/jp-x-g/PressPass/main/images/logo.png" alt="PressPass logo" width="200" height="200">
+	<img src="https://raw.githubusercontent.com/jp-x-g/PressPass/main/images/logo.png" alt="PressPass logo" width="400" height="400">
 </p>
+
 *Manually typing out citation templates for newspapers? Just because the newspaper is from 1890 doesn't mean your editing process has to be.*
 
 This software is a [Greasemonkey](https://en.wikipedia.org/wiki/Greasemonkey) extension adding features to [Newspapers.com](https://newspapers.com), which work for subscribers as well as free users. It gives you a few very powerful tools on the search page, as well as for individual clippings. In my opinion, if you use Newspapers.com to write Wikipedia articles and you don't use this script, you're wasting your time on this planet. 
