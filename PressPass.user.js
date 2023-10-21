@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name     PressPass
-// @version  2.2
+// @version  2.1
 // @grant    GM.getValue
 // @grant    GM.setValue
 // @require  http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js
@@ -40,6 +40,7 @@
   // Settings are not currently open, so set this to zero.
   
   function settingsToggle() {
+    console.log("Toggling settings");
     if (settingsOpen == 0){
       settingsWindow();
     }
@@ -131,9 +132,14 @@
       document.getElementsByClassName("navbar")[0].appendChild(setHTML);
       // Try to add it to navbar.
     } catch(e) {
-      document.getElementsByClassName("viewer-navbar")[0].appendChild(setHTML);
-      // This is what it'll do on the clippings page.
-    }
+        try {
+        document.getElementsByClassName("viewer-navbar")[0].appendChild(setHTML);
+        // Try other thing if that's not on the page.
+      } catch(e) {
+        document.getElementsByClassName("LeftContainer")[0].appendChild(setHTML);
+        // Try other thing if that's not on the page.
+      } // end inner nested catch
+    } // end outer nested catch
     if (settings['style'] == 1) { document.getElementById("stylebox1").checked = true; }
     if (settings['style'] == 2) { document.getElementById("stylebox2").checked = true; }
     if (settings['style'] == 3) { document.getElementById("stylebox3").checked = true; }
@@ -187,11 +193,16 @@
     if (document.getElementById("lengthbox5").checked == true) { settings['length'] = 5; }
     try {
       document.getElementsByClassName("navbar")[0].removeChild(setHTML);
-      // Try to add it to navbar.
+      // Try to remove it from navbar.
     } catch(e) {
-      document.getElementsByClassName("viewer-navbar")[0].removeChild(setHTML);
-      // This is what it'll do on the clippings page.
-    }
+        try {
+        document.getElementsByClassName("viewer-navbar")[0].removeChild(setHTML);
+        // Try other thing if that's not on the page.
+      } catch(e) {
+        document.getElementsByClassName("LeftContainer")[0].removeChild(setHTML);
+        // Try other thing if that's not on the page.
+      } // end inner nested catch
+    } // end outer nested catch
     saveSettings(settings);
   }
   
@@ -865,40 +876,59 @@
   
     
   ////////////////////////////////////////////////////////////////////////////////////////////////////
-  // What to do if it's a "clipping" page is below.
+  // What to do if it's a "clip" or "article" page is below.
   ////////////////////////////////////////////////////////////////////////////////////////////////////
   
  
-  if ((window.location.href.indexOf("newspapers.com/clip/") >= 0) || (window.location.href.indexOf("www-newspapers-com.wikipedialibrary.idm.oclc.org/clip/") >= 0)) {
-		function generateFromClip(){
+  if ((window.location.href.indexOf("newspapers.com/clip/") >= 0) || (window.location.href.indexOf("www-newspapers-com.wikipedialibrary.idm.oclc.org/clip/") >= 0) || (window.location.href.indexOf("newspapers.com/article/") >= 0) || (window.location.href.indexOf("www-newspapers-com.wikipedialibrary.idm.oclc.org/article/") >= 0)) {
+    function generateFromClip(){
+      console.log("asdf");
       var cliplink = window.location.href;
-      var cliptitl = document.getElementById("spotTitle").innerHTML;
-      var clipdate = document.querySelector('[itemprop=dateCreated]').innerHTML;
-      var clippage = document.querySelector('[itemprop=position]').innerHTML;
-      var clipname = document.getElementsByClassName("paper-title")[0].innerHTML;
-      var clipcity = document.getElementsByClassName("text-dark")[0].innerHTML;
+      console.log("link logged");
+      //var cliptitl = document.getElementById("spotTitle").innerHTML;
+      var cliptitl = document.querySelector('h1[class^="page_Title"]').innerHTML;
+      console.log("titl logged");
+      // var clipdate = document.querySelector('[itemprop=dateCreated]').innerHTML;
+      var clipdate = document.querySelector('time[datetime][month="short"]').innerHTML;
+      console.log(clipdate)
+      console.log("date logged");
+      var clippage = document.querySelector('span[class^="PublicationInfo_Page"]').innerHTML;
+      console.log("page logged");
+      var clipname = document.querySelector('h2[class^="PublicationInfo_Publisher"]').innerHTML;
+      console.log("name logged");
+      var clipcity = document.querySelector('p[class^="PublicationInfo_Location"]').innerHTML;
+      console.log("city logged");
       
-     	var parsedDy = clipdate.substr(0,2);
-     	//alert(parsedDy);
-     	var parsedYr = clipdate.substr(7,4);
-     	//alert(parsedYr);
-     	var parsedWk = clipdate.substr(13,3);
-     	//alert(parsedWk);
-     	var parsedMn = "FOO";
-     	var months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-     	for(var asdf in months) {
-	      if (clipdate.indexOf(months[asdf]) >= 0){ 
-	        // Take the incrementor and store it as the month.
-	        // Remember to add one, or you are a bozo!
-	        parsedMn = "00" + String(parseInt(asdf)+1);
-	        parsedMn = parsedMn.slice(-2);
-	      } // If it actually finds the darn thing.
-	     } // For every month.
-	    clipdate = parsedYr + "-" + parsedMn + "-" + parsedDy
-	      
-	    clippage = clippage.replaceAll("Page ","");
+      // clipdate is something like
+      // Tue, Aug 31, 1813
+      //
+      //           1111111
+      // 01234567890123456
       
-    	var citeString = composeCitation(cliplink, clipdate, clippage, cliptitl, clipname, clipcity, parsedWk);
+      //var parsedDy = clipdate.substr(0,2);
+      var parsedDy = clipdate.substr(9,2);
+      //alert(parsedDy);
+      //var parsedYr = clipdate.substr(7,4);
+      var parsedYr = clipdate.substr(13,4);
+      //alert(parsedYr);
+      //var parsedWk = clipdate.substr(13,3);
+      var parsedWk = clipdate.substr(0,3);
+      //alert(parsedWk);
+      var parsedMn = "FOO";
+      var months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+      for(var asdf in months) {
+        if (clipdate.indexOf(months[asdf]) >= 0){ 
+          // Take the incrementor and store it as the month.
+          // Remember to add one, or you are a bozo!
+          parsedMn = "00" + String(parseInt(asdf)+1);
+          parsedMn = parsedMn.slice(-2);
+        } // If it actually finds the darn thing.
+       } // For every month.
+      clipdate = parsedYr + "-" + parsedMn + "-" + parsedDy
+        
+      clippage = clippage.replaceAll("Page ","");
+      
+      var citeString = composeCitation(cliplink, clipdate, clippage, cliptitl, clipname, clipcity, parsedWk);
       
       //alert(citeString);
       
@@ -906,29 +936,42 @@
       var citehtml = document.createElement('div');
       citehtml.innerHTML   = '<div id="renderedCiteID" style="font-size: 75%"><br />' + citeString + '</div>';  
       if(!document.getElementById("renderedCiteID")) { 
-      	document.getElementsByClassName("col-right-line")[0].appendChild(citehtml);  
+        document.getElementsByClassName("form-label")[1].appendChild(citehtml);  
       } else {
-        document.getElementById("renderedCiteID").innerHTML = citeString;
+        // document.getElementById("renderedCiteID").innerHTML = citeString;
       } // If it's already there, change it instead of adding it.
       
       
     } // Close definition for generateFromClip()
-   
-    var clippingSetHTML = document.createElement ('div');
-    clippingSetHTML.innerHTML   = '                                                                                    \
-      <div id="gmSomeID">                                                                                          \
-        &nbsp;<button type="button" id="settingsButton" class="stbutton">PressPass settings</button>							 \
-      </div>                                                                                                       \
-      ';  
-    // Set the HTML for the settings button.
-    document.getElementsByClassName("clear pe")[0].appendChild(clippingSetHTML);  
-    // Add to the header.
-    document.getElementById("settingsButton").style = "font-family: monospace; padding: 1px 1px 1px 1px; width: 7em; font-size:75%";
-    // Format the button.
-    document.getElementById("settingsButton").addEventListener("click", settingsToggle);
-  
-		var intervalAddCite = setInterval(generateFromClip, 500);
-  	// Generate a citation automatically when the page loads, instead of waiting for the user to click.
+    
+    
+    // Ignore the following function. The website is too bad for this to work properly, it just blows up and does nothing.
+    function checkAndAppendClippingSetHTML() {
+      // Check if the element with id "gmSomeID" already exists
+      var existingElement = document.getElementById("settingsButton");
+      if (!existingElement) {
+         // Element doesn't exist, create and append it
+         var clippingSetHTML = document.createElement('div');
+         clippingSetHTML.innerHTML = '                                                                                    \
+           <div id="gmSomeID">                                                                                          \
+             &nbsp;<button type="button" id="settingsButton" class="stbutton">PressPass settings</button>              \
+           </div>                                                                                                       \
+           ';
+         document.getElementsByClassName("LeftContainer")[0].appendChild(clippingSetHTML);
+         // Add to the header.
+         document.getElementById("settingsButton").style = "font-family: monospace; padding: 1px 1px 1px 1px; width: 7em; font-size:75%";
+         // Format the button.
+         document.getElementById("settingsButton").addEventListener("click", settingsToggle);
+      }
+    } 
+    
+    //setInterval(checkAndAppendClippingSetHTML, 500);
+    // Commented out, 2023-10-20. Two hours wasted here for literally nothing.
+    // There is no possible reward worth the pain of trying to get this to render.
+    
+    
+    var intervalAddCite = setInterval(generateFromClip, 500);
+    // Generate a citation automatically when the page loads, instead of waiting for the user to click.
   
   } // Close block for what to do if it's a "clipping" page.  
   
@@ -964,7 +1007,7 @@
        &nbsp;<button type="button" id="clipHackButton" class="chbutton">Citeify</button>\
       </div>\
         ';
-   	document.getElementsByClassName("viewer-navbar")[0].appendChild(clipHackHTML);
+    document.getElementsByClassName("viewer-navbar")[0].appendChild(clipHackHTML);
     // Add to the header.
     document.getElementById("clipHackButton").style = "font-family: monospace; padding: 1px 1px 1px 1px; width: 7em; font-size:75%";
     // Format the button.
