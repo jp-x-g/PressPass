@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name     PressPass
-// @version  2.1
+// @version  2.2
 // @grant    GM.getValue
 // @grant    GM.setValue
 // @require  http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js
@@ -301,6 +301,10 @@
       parsedDate  = molod + " " + sdayd + ", " + yeard;
       parsedToday = molot + " " + sdayt + ", " + yeart;
     }      
+    
+    
+    // Oct '23: Remove weird proxy URL gunk, if it exists.
+    link = link.replace("www-newspapers-com.wikipedialibrary.idm.oclc.org", "newspapers.com");
     
     // Compose an actual citation to return.
     var reffy = "";
