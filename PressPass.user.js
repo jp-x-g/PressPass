@@ -936,7 +936,9 @@
       var citehtml = document.createElement('div');
       citehtml.innerHTML   = '<div id="renderedCiteID" style="font-size: 75%"><br />' + citeString + '</div>';  
       if(!document.getElementById("renderedCiteID")) { 
-        document.getElementsByClassName("form-label")[1].appendChild(citehtml);  
+        //document.getElementsByClassName("form-label")[1].appendChild(citehtml);  
+        //document.querySelector('h1[class^="page_Title"]').appendChild(citehtml);  
+        document.querySelector('div[class^="ArticleActions_Actions"]').appendChild(citehtml);  
       } else {
         // document.getElementById("renderedCiteID").innerHTML = citeString;
       } // If it's already there, change it instead of adding it.
