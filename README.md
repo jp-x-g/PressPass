@@ -51,7 +51,7 @@ Here is what it does, and how to make it do those things.
 ## Search page
 > [back to top](#table-of-contents)
 
-![A screenshot of the search-page menu.](/images/demo1.png)
+![A screenshot of the search-page menu.](/images/demo-01.png)
 There are several buttons added to the search bar at the top of the page, which I will explain going from left to right.
 
 ### "Auto"
@@ -95,14 +95,17 @@ Then you click "**copy**" from the social media sharing popup (if you've disable
 
 It's easy as hell:
 
-![A screenshot of the newspage page, while making a clipping.](/images/demo2.jpg)
-Open the page (using the "image" link setting). It will look like this. You may have to scrounge around and figure out which specific part of the page is the article you want: then click the "clip" button.
-![A screenshot of the newspage page, while making a clipping.](/images/demo3.jpg)
-Drag the rectangle around and size it to fit over your article. Type in the headline as the clipping title (you can type in anything you want, of course, but this greatly reduces the amount of work you have to do).
-![A screenshot of the newspage page, while making a clipping.](/images/demo4.jpg)
-By default, this social media sharing popup window is enabled whenever you make a clipping. You probably disabled it because it's annoying -- but you're about to see how based it can be.
-![A screenshot of the newspage page, while making a clipping.](/images/demo5.jpg)
-When you click the "copy" button, it will generate a properly formatted citation, with the clipping URL automatically included, and put that in your clipboard. It will also show it in the sharing box, so you can check to see if you messed up.
+![A screenshot of the newspage page.](/images/demo-02.jpg)
+Open the page (using the "image" link setting). It will look like this. You may have to scrounge around and figure out which specific part of the page is the article you want: then click the "Clip" button at the top of the page. This will cause a pane to pop out from the right side of the screen.
+![A screenshot of the newspage page, while making a clipping.](/images/demo-03.jpg)
+Drag the rectangle around and size it to fit over your article. Type in the headline as the clipping title (you can type in anything you want, of course, but this greatly reduces the amount of work you have to do). Then click "Save Clipping".
+![A screenshot of the newspage page, while making a clipping.](/images/demo-04.jpg)
+This will cause the page to reload. Wait a few seconds until it looks like this, and then click "Citeify" in the top left corner (below "PressPass settings").
+![A screenshot of the newspage page, while making a clipping.](/images/demo-05.jpg)
+This will compose the citation text, and put it in the pane on the right, where you can copy it and roam free.
+
+* *Note: the old, legacy clipping pages have a different interface. Using PressPass with that interface is documented here:*
+* *First, [click "CLIP" and draw a box](/images/demo-old-02.jpg). Then [type the name of the article in the text box to title the clipping](/images/demo-old-03.jpg). Then [click "clip" and make sure the sharing dialogue is enabled](/images/demo-old-04.jpg). Then [click "copy" and it will generate the citation, looking like this](/images/demo-old-05.jpg).*
 
 ## Clippings
 > [back to top](#table-of-contents)
@@ -116,7 +119,7 @@ This one is automatic. Whenever you view a page for an individual clipping, a ci
 
 The software's behavior when generating citations can be changed from the settings menu, as seen below (accessible on both search pages and clipping pages).
 
-![A screenshot of the settings menu, from the clipping page.](/images/demo6.jpg)
+![A screenshot of the settings menu, from the clipping page.](/images/demo-06.jpg)
 
 ### Citation styles
 
@@ -213,11 +216,11 @@ Click [here](https://raw.githubusercontent.com/jp-x-g/PressPass/main/PressPass.u
 #### Manual installation
 Create a new userscript from the Greasemonkey menu, like this:
 
-![A screenshot of the Greasemonkey menu, with "new userscript" highlighted.](/images/demo7.png)
+![A screenshot of the Greasemonkey menu, with "new userscript" highlighted.](/images/demo-07.png)
 
 Then, you will be taken to a page that looks like this:
 
-![A screenshot of a blank new Greasemonkey script.](/images/demo8.png)
+![A screenshot of a blank new Greasemonkey script.](/images/demo-08.png)
 
 The raw source code for this script can be found [here](https://raw.githubusercontent.com/jp-x-g/PressPass/main/PressPass.user.js). Copy all of that, and paste it into the blank userscript (replacing the placeholder text that's already there). Congratulations, you has a PressPass.
 
