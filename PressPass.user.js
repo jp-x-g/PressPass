@@ -936,7 +936,7 @@
   
   
   if ((window.location.href.indexOf("newspapers.com/image/") >= 0) || (window.location.href.indexOf("www-newspapers-com.wikipedialibrary.idm.oclc.org/image/") >= 0)){
-   // If it's an image page (i.e. the page with clippings on it
+   // If it's an image page (i.e. the page with clippings on it)
     var clipSetHTML         = document.createElement ('div');
     clipSetHTML.innerHTML   = '                                                                                    \
       <div id="gmSomeID">                                                                                          \
@@ -952,6 +952,20 @@
     // Add an event listener to show/hide settings when you click da freakin button.   
    // Try every 500 ms to add the event listener. In an affront to all common decency, this actually works.
    var intervalAddCite = setInterval(addListener, 500);
+    
+   // 2023-10-20: Since this somehow works again but is buried in a weird place, maybe we can make it work easily.
+   var clipHackHTML      = document.createElement('div');
+    clipHackHTML.innerHTML = ' \
+      <div id="gmSomeID2">\
+       &nbsp;<button type="button" id="clipHackButton" class="chbutton">Citeify</button>\
+      </div>\
+        ';
+   	document.getElementsByClassName("viewer-navbar")[0].appendChild(clipHackHTML);
+    // Add to the header.
+    document.getElementById("clipHackButton").style = "font-family: monospace; padding: 1px 1px 1px 1px; width: 7em; font-size:75%";
+    // Format the button.
+    document.getElementById("clipHackButton").addEventListener("click", autoCite);
+
    
    function addListener() {
     document.getElementById("copyBtn").addEventListener("click", autoCite);
