@@ -426,7 +426,7 @@
   // What to do if it's a "search" page is below.
   ////////////////////////////////////////////////////////////////////////////////////////////////////
   
-  if (window.location.href.indexOf("newspapers.com/search/") >= 0){
+  if ((window.location.href.indexOf("newspapers.com/search/") >= 0) || (window.location.href.indexOf("www-newspapers-com.wikipedialibrary.idm.oclc.org/search/") >= 0)){
     // If we're on a search page at newspapers.com
     //alert("Running a script, wow.");
     var newHTML         = document.createElement ('div');
@@ -865,7 +865,7 @@
   ////////////////////////////////////////////////////////////////////////////////////////////////////
   
  
-  if (window.location.href.indexOf("newspapers.com/clip/") > 0){
+  if ((window.location.href.indexOf("newspapers.com/clip/") >= 0) || (window.location.href.indexOf("www-newspapers-com.wikipedialibrary.idm.oclc.org/clip/") >= 0)) {
 		function generateFromClip(){
       var cliplink = window.location.href;
       var cliptitl = document.getElementById("spotTitle").innerHTML;
@@ -935,7 +935,7 @@
   
   
   
-  if (window.location.href.indexOf("newspapers.com/image/") >= 0){
+  if ((window.location.href.indexOf("newspapers.com/image/") >= 0) || (window.location.href.indexOf("www-newspapers-com.wikipedialibrary.idm.oclc.org/image/") >= 0)){
    // If it's an image page (i.e. the page with clippings on it
     var clipSetHTML         = document.createElement ('div');
     clipSetHTML.innerHTML   = '                                                                                    \
