@@ -1099,7 +1099,18 @@
      clipname = clipname.substr(0,clipname.indexOf("(")).trim(); 
      */
       
-     clipcity = "";
+      // Putting it back in Oct '23.
+     var clipcity = document.getElementsByClassName('mb-0')[2].innerHTML;
+     // [0] is the paper name, [1] is the date from the top bar, and [2] is the location.
+     // Something like:
+     // <small><b>Vancouver, British Columbia, Canada <span aria-hidden="true">·</span> Sunday, May 19, 1901</b></small>
+     clipcity = clipcity.replace("<small>","").replace("</small>","").replace("<b>","").replace("</b>","")
+     // Vancouver, British Columbia, Canada <span aria-hidden="true">·</span> Sunday, May 19, 1901
+     var cutoffstring = "<span";
+     clipcity = clipcity.substr(0, clipcity.indexOf(cutoffstring));
+     //alert(clipcity);
+      
+     // clipcity = "";
      // Get the URL for the link.
      //var cliplink = document.getElementById('share_link_link_url').value;
       
