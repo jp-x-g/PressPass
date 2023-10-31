@@ -1,12 +1,12 @@
 // ==UserScript==
 // @name     PressPass
-// @version  2.1
+// @version  2.1.0
 // @grant    GM.getValue
 // @grant    GM.setValue
 // @require  http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js
 // @require  https://gist.github.com/raw/2625891/waitForKeyElements.js
 // ==/UserScript==
-// JPxG, 2021 September 9
+// JPxG, 2021 September 9 - 2023 October 30
 
 ( function() {
   
@@ -882,37 +882,50 @@
  
   if ((window.location.href.indexOf("newspapers.com/clip/") >= 0) || (window.location.href.indexOf("www-newspapers-com.wikipedialibrary.idm.oclc.org/clip/") >= 0) || (window.location.href.indexOf("newspapers.com/article/") >= 0) || (window.location.href.indexOf("www-newspapers-com.wikipedialibrary.idm.oclc.org/article/") >= 0)) {
     function generateFromClip(){
-      console.log("asdf");
+      //console.log("asdf");
       var cliplink = window.location.href;
-      console.log("link logged");
+      //console.log("link logged");
       //var cliptitl = document.getElementById("spotTitle").innerHTML;
       var cliptitl = document.querySelector('h1[class^="page_Title"]').innerHTML;
-      console.log("titl logged");
+      //console.log("titl logged");
       // var clipdate = document.querySelector('[itemprop=dateCreated]').innerHTML;
       var clipdate = document.querySelector('time[datetime][month="short"]').innerHTML;
-      console.log(clipdate)
-      console.log("date logged");
+      //console.log(clipdate)
+      //console.log("date logged");
       var clippage = document.querySelector('span[class^="PublicationInfo_Page"]').innerHTML;
-      console.log("page logged");
+      //console.log("page logged");
       var clipname = document.querySelector('h2[class^="PublicationInfo_Publisher"]').innerHTML;
-      console.log("name logged");
+      //console.log("name logged");
       var clipcity = document.querySelector('p[class^="PublicationInfo_Location"]').innerHTML;
-      console.log("city logged");
+      //console.log("city logged");
       
       // clipdate is something like
       // Tue, Aug 31, 1813
-      //
       //           1111111
       // 01234567890123456
-      
+
+      //var parsedWk = clipdate.substr(13,3);
+      var parsedWk = clipdate.substr(0,3);
+      // Strip out the day name -- not really necessary, but may be useful for debugging.
+      //clipdate = clipdate.replace("Mon, ","").replace("Tue, ","").replace("Wed, ","").replace("Thu, ","").replace("Fri, ","").replace("Sat, ","").replace("Sun, ","")
+      // Grotesque, lazy hack for zero-padding the date lol.
+      clipdate = clipdate.replace(" 1, "," 01, ")
+      clipdate = clipdate.replace(" 2, "," 02, ")
+      clipdate = clipdate.replace(" 3, "," 03, ")
+      clipdate = clipdate.replace(" 4, "," 04, ")
+      clipdate = clipdate.replace(" 5, "," 05, ")
+      clipdate = clipdate.replace(" 6, "," 06, ")
+      clipdate = clipdate.replace(" 7, "," 07, ")
+      clipdate = clipdate.replace(" 8, "," 08, ")
+      clipdate = clipdate.replace(" 9, "," 09, ")
+
       //var parsedDy = clipdate.substr(0,2);
       var parsedDy = clipdate.substr(9,2);
+
       //alert(parsedDy);
       //var parsedYr = clipdate.substr(7,4);
       var parsedYr = clipdate.substr(13,4);
       //alert(parsedYr);
-      //var parsedWk = clipdate.substr(13,3);
-      var parsedWk = clipdate.substr(0,3);
       //alert(parsedWk);
       var parsedMn = "FOO";
       var months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
@@ -925,7 +938,12 @@
         } // If it actually finds the darn thing.
        } // For every month.
       clipdate = parsedYr + "-" + parsedMn + "-" + parsedDy
-        
+
+      var clipcity_incision = clipcity.indexOf(" •");
+      if (clipcity_incision !== -1) {
+        clipcity = clipcity.slice(0, clipcity_incision); // "4" is the length of "piss"
+      }   
+
       clippage = clippage.replaceAll("Page ","");
       
       var citeString = composeCitation(cliplink, clipdate, clippage, cliptitl, clipname, clipcity, parsedWk);
