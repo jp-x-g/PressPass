@@ -212,7 +212,7 @@
     saveSettings(settings);
   }
   
-  function composeCitation(link, date, page, title, npname, city, week, auths) {
+  function composeCitation(link, date, page, title, npname, city, week, autharray) {
     
     // Make a reasonably useful ref tag.
     // No idea why the hell this ended up being a thing, but strip it out.
@@ -318,6 +318,16 @@
       parsedDate  = molod + " " + sdayd + ", " + yeard;
       parsedToday = molot + " " + sdayt + ", " + yeart;
     }      
+    
+    // Sanitize author array (don't allow duplicates).
+    var auths = []
+    if(autharray.length > 0){
+      for(let i = 0; i < autharray.length; i++){
+        if(!auths.includes(autharray[i])) {
+          auths.push(autharray[i]);
+        } // If it doesn't already include it.        
+      } // For every element of autharray
+    } // If autharray has anything in it -- it might not!
     
     // Compose an actual citation to return.
     var ml = settings['multi'];
@@ -971,7 +981,19 @@
 
       clippage = clippage.replaceAll("Page ","");
       
-      var auths = [];
+      var auths = []
+      var tags = document.querySelectorAll('a[class^="Tags"]');
+      console.log(tags);
+      //console.log("boof");
+      if(tags.length > 1){
+       for (let i = 1; i < tags.length; i++) {
+         // For each tag (which we're going to interpret as author names here)
+         auths.push(tags[i].innerHTML);
+        //console.log("woof");
+        //console.log(tags[i].innerHTML);
+       };
+      } // if more than one tag exists, there is always one thing with "badge-secondary"
+      console.log("tags scanned");
       
       var citeString = composeCitation(cliplink, clipdate, clippage, cliptitl, clipname, clipcity, parsedWk, auths);
       
@@ -1100,7 +1122,7 @@
      var auths = []
      var tags = document.getElementsByClassName("badge-secondary");
      console.log(tags);
-      console.log("boof");
+     //console.log("boof");
      if(tags.length > 1){
       for (let i = 1; i < tags.length; i++) {
         // For each tag (which we're going to interpret as author names here)
