@@ -1,12 +1,12 @@
 // ==UserScript==
 // @name     PressPass
-// @version  2.1
+// @version  2.1.2
 // @grant    GM.getValue
 // @grant    GM.setValue
 // @require  http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js
 // @require  https://gist.github.com/raw/2625891/waitForKeyElements.js
 // ==/UserScript==
-// JPxG, 2021 September 9
+// JPxG, 2021 September 9 - 2023 November 1
 
 ( function() {
   
@@ -71,6 +71,9 @@
         <br />\
         <br />\
         <b>Settings&nbsp;for&nbsp;Wikipedia&nbsp;citation&nbsp;templates</b>\
+        <br />\
+        <input type="checkbox" name="authbox" id="authbox1" value="au1">\
+        Parse&nbsp;author&nbsp;names&nbsp;from&nbsp;clipping&nbsp;tags\
         <br />\
         Date&nbsp;format:<br />\
         &nbsp;&nbsp;&nbsp;<input type="radio" name="datefbox" id="datefbox1" value="df1">\
@@ -145,6 +148,7 @@
     if (settings['style'] == 3) { document.getElementById("stylebox3").checked = true; }
     if (settings['style'] == 4) { document.getElementById("stylebox4").checked = true; }
     if (settings['style'] == 5) { document.getElementById("stylebox5").checked = true; }
+    if (settings['authparse'] == 1) { document.getElementById("authbox1").checked = true; }
     if (settings['date'] == 1) { document.getElementById("datefbox1").checked = true; }
     if (settings['date'] == 2) { document.getElementById("datefbox2").checked = true; }
     if (settings['date'] == 3) { document.getElementById("datefbox3").checked = true; }
@@ -169,11 +173,13 @@
     settings['accdate'] = 0;
     settings['via'] = 0;
     settings['week'] = 0;
+    settings['authparse'] = 0;
     if (document.getElementById("stylebox1").checked == true) { settings['style'] = 1; }
     if (document.getElementById("stylebox2").checked == true) { settings['style'] = 2; }
     if (document.getElementById("stylebox3").checked == true) { settings['style'] = 3; }
     if (document.getElementById("stylebox4").checked == true) { settings['style'] = 4; }
     if (document.getElementById("stylebox5").checked == true) { settings['style'] = 5; }
+    if (document.getElementById("authbox1").checked == true) { settings['authparse'] = 1; }
     if (document.getElementById("datefbox1").checked == true) { settings['date'] = 1; }
     if (document.getElementById("datefbox2").checked == true) { settings['date'] = 2; }
     if (document.getElementById("datefbox3").checked == true) { settings['date'] = 3; }
@@ -313,13 +319,28 @@
       parsedToday = molot + " " + sdayt + ", " + yeart;
     }      
     
+    // Compose an actual citation to return.
+    var ml = settings['multi'];
+    var reffy = "";
+    var authstring = "";        
+    
+    // Compose string for authors, if that setting's enabled.
+    if ((settings['authparse'] == 1) && (auths.length > 0)){
+      for(let i = 0; i < auths.length; i++){    
+        if (settings['spacing'] == 0) {
+          authstring += "|author" + String(i + 1) + "=" + auths[i];
+        }
+        if (settings['spacing'] == 1) {
+          authstring += "&nbsp;&nbsp;| author" + String(i + 1) + " &nbsp; &nbsp; = " + auths[i];
+        }
+        if (ml == 1) { authstring += "<br />"; }  
+      }
+    }
+    
     
     // Oct '23: Remove weird proxy URL gunk, if it exists.
     link = link.replace("www-newspapers-com.wikipedialibrary.idm.oclc.org", "newspapers.com");
     
-    // Compose an actual citation to return.
-    var reffy = "";
-    var ml = settings['multi'];
     // if (ml == 1) { reffy += "<br />"; }
     if (settings['spacing'] == 0) {
       reffy += '&lt;ref name="' + refTag + '"&gt;' + "{{Cite news";
@@ -344,6 +365,7 @@
         reffy += "|access-date=" + parsedToday;
         if (ml == 1) { reffy += "<br />"; }
       }
+      reffy += authstring;
       reffy += "}}&lt;/ref&gt;";
       if (settings['week'] == 1) {
         reffy += "&lt;!-- " + week + " --&gt;"
@@ -378,6 +400,7 @@
         reffy += "&nbsp;&nbsp;| access-date = " + parsedToday;
         if (ml == 1) { reffy += "<br />"; }
       }
+      reffy += authstring;
       reffy += "}}&lt;/ref&gt;";
       if (settings['week'] == 1) {
         reffy += "&lt;!-- " + week + " --&gt;"
