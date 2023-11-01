@@ -1,12 +1,12 @@
 // ==UserScript==
 // @name     PressPass
-// @version  2.1.0
+// @version  2.1
 // @grant    GM.getValue
 // @grant    GM.setValue
 // @require  http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js
 // @require  https://gist.github.com/raw/2625891/waitForKeyElements.js
 // ==/UserScript==
-// JPxG, 2021 September 9 - 2023 October 30
+// JPxG, 2021 September 9
 
 ( function() {
   
@@ -206,7 +206,7 @@
     saveSettings(settings);
   }
   
-  function composeCitation(link, date, page, title, npname, city, week) {
+  function composeCitation(link, date, page, title, npname, city, week, auths) {
     
     // Make a reasonably useful ref tag.
     // No idea why the hell this ended up being a thing, but strip it out.
@@ -828,8 +828,10 @@
            
            
           var aTitle = "Page " + aPage;
+           
+          var aAuths = [];
           // Use compositing function defined elsewhere.
-          var citation = composeCitation(aLink, aDate, aPage, aTitle, paper, aCity, aDay);
+          var citation = composeCitation(aLink, aDate, aPage, aTitle, paper, aCity, aDay, aAuths);
           // function composeCitation(link, date, page, title, npname, city, week)  
            
            
@@ -941,12 +943,14 @@
 
       var clipcity_incision = clipcity.indexOf(" •");
       if (clipcity_incision !== -1) {
-        clipcity = clipcity.slice(0, clipcity_incision); // "4" is the length of "piss"
+        clipcity = clipcity.slice(0, clipcity_incision);
       }   
 
       clippage = clippage.replaceAll("Page ","");
       
-      var citeString = composeCitation(cliplink, clipdate, clippage, cliptitl, clipname, clipcity, parsedWk);
+      var auths = [];
+      
+      var citeString = composeCitation(cliplink, clipdate, clippage, cliptitl, clipname, clipcity, parsedWk, auths);
       
       //alert(citeString);
       
@@ -992,6 +996,8 @@
     
     var intervalAddCite = setInterval(generateFromClip, 500);
     // Generate a citation automatically when the page loads, instead of waiting for the user to click.
+    // Attempt to do it every 500 milliseconds, rather than just once when the page first loads,
+    // since other elements probably won't be ready when the page first loads.
   
   } // Close block for what to do if it's a "clipping" page.  
   
@@ -1056,16 +1062,39 @@
      // This will give something like "<b>The Sacramento Bee (Sacramento, California)</b>".
      // LEGACY: var clipname = String(navNode.querySelectorAll('a')[0].innerHTML);
      var clipname = String(document.getElementById("paperIDLabel").querySelectorAll('a')[0].innerHTML);
+     console.log("name scanned");
      // alert(clipname);
      // This will give something like "<b>08 Oct 1868, Thu</b>".
-     var clipdate = String(bottomBrowse.querySelectorAll('a')[1].innerHTML);
+     var clipdate = String(bottomBrowse.querySelectorAll("a")[1].innerHTML);
+     console.log("date scanned");
      //alert(clipdate);
      // LEGACY: var clipdate = String(navNode.querySelectorAll('a')[1].innerHTML);
      // This will give something like "<em><b>Page 3</b></em>".
-     var clippage = document.getElementById('pageNum').placeholder;
+     var clippage = document.getElementById("pageNum").placeholder;
+     console.log("page scanned");
      //alert(clippage);
      // LEGACY: var clippage = String(navNode.getElementsByClassName('end')[0].innerHTML);
-     //alert(clippage)
+     var auths = []
+     var tags = document.getElementsByClassName("badge-secondary");
+     console.log(tags);
+      console.log("boof");
+     if(tags.length > 1){
+      for (let i = 1; i < tags.length; i++) {
+        // For each tag (which we're going to interpret as author names here)
+        auths.push(tags[i].innerHTML);
+       //console.log("woof");
+       //console.log(tags[i].innerHTML);
+      };
+     } // if more than one tag exists, there is always one thing with "badge-secondary"
+     console.log("tags scanned");
+     // alert(auths);
+
+      
+      
+     //var clipauth = document.getElementsByClassName("text-truncate")[0].title;
+      
+      
+     // text-truncate mb-0 text-small
      
      // Time to strip out the bold and em tags.
      clipname = clipname.replaceAll("<b>","");
@@ -1158,7 +1187,7 @@
      // citeString += "&lt;!-- " + parsedWk + " --&gt;"
 
      // Use compositing function defined elsewhere.
-     var citeString = composeCitation(cliplink, clipdate, clippage, cliptitl, clipname, clipcity, parsedWk);
+     var citeString = composeCitation(cliplink, clipdate, clippage, cliptitl, clipname, clipcity, parsedWk, auths);
      // function composeCitation(link, date, page, title, npname, city, week) 
          
       
