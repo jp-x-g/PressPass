@@ -938,21 +938,34 @@
       // Tue, Aug 31, 1813
       //           1111111
       // 01234567890123456
+      
+      // As of June 2024: no it's not
+      // it has full day names, breaking da script!!!!!
+      
+      // Grotesque hack for normalizing the days.
+			clipdate = clipdate.replace("Monday",    "Mon");
+			clipdate = clipdate.replace("Tuesday",   "Tue");
+			clipdate = clipdate.replace("Wednesday", "Wed");
+			clipdate = clipdate.replace("Thursday",  "Thu");
+			clipdate = clipdate.replace("Friday",    "Fri");
+			clipdate = clipdate.replace("Saturday",  "Sat");
+			clipdate = clipdate.replace("Sunday",    "Sun");
+      
 
       //var parsedWk = clipdate.substr(13,3);
       var parsedWk = clipdate.substr(0,3);
       // Strip out the day name -- not really necessary, but may be useful for debugging.
       //clipdate = clipdate.replace("Mon, ","").replace("Tue, ","").replace("Wed, ","").replace("Thu, ","").replace("Fri, ","").replace("Sat, ","").replace("Sun, ","")
       // Grotesque, lazy hack for zero-padding the date lol.
-      clipdate = clipdate.replace(" 1, "," 01, ")
-      clipdate = clipdate.replace(" 2, "," 02, ")
-      clipdate = clipdate.replace(" 3, "," 03, ")
-      clipdate = clipdate.replace(" 4, "," 04, ")
-      clipdate = clipdate.replace(" 5, "," 05, ")
-      clipdate = clipdate.replace(" 6, "," 06, ")
-      clipdate = clipdate.replace(" 7, "," 07, ")
-      clipdate = clipdate.replace(" 8, "," 08, ")
-      clipdate = clipdate.replace(" 9, "," 09, ")
+      clipdate = clipdate.replace(" 1, "," 01, ");
+      clipdate = clipdate.replace(" 2, "," 02, ");
+      clipdate = clipdate.replace(" 3, "," 03, ");
+      clipdate = clipdate.replace(" 4, "," 04, ");
+      clipdate = clipdate.replace(" 5, "," 05, ");
+      clipdate = clipdate.replace(" 6, "," 06, ");
+      clipdate = clipdate.replace(" 7, "," 07, ");
+      clipdate = clipdate.replace(" 8, "," 08, ");
+      clipdate = clipdate.replace(" 9, "," 09, ");
 
       //var parsedDy = clipdate.substr(0,2);
       var parsedDy = clipdate.substr(9,2);
@@ -1159,13 +1172,22 @@
      //"08 Oct 1868, Thu"
      // 0123456789111111
      //           012345
+      
+     //var parsedDy = clipdate.substr(0,2);
+     //var parsedYr = clipdate.substr(7,4);
+     //var parsedWk = clipdate.substr(13,3);
+      
+      
+     // Note from June 2024: ugggghhhhh it's completely different now which broke everything yet again.
+     // Now it is:
+     //"Sat, Feb 02, 1918"
+     // 0123456789111111
+     //           012345
      
-     var parsedDy = clipdate.substr(0,2);
-     //alert(parsedDy);
-     var parsedYr = clipdate.substr(7,4);
-     //alert(parsedYr);
-     var parsedWk = clipdate.substr(13,3);
-     //alert(parsedWk);
+     var parsedDy = clipdate.substr(9,2);
+     var parsedYr = clipdate.substr(13,4);
+		 var parsedWk = clipdate.substr(0,3);                              
+      
      var parsedMn = "FOO";
      var months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
      for(var asdf in months) {
@@ -1240,7 +1262,7 @@
      ////////// Now we are going to add the citation to the layout of the page. 
      
      var citeDiv = document.createElement('div');
-     citeDiv.innerHTML = '<div id="citationDiv"><p>' + citeString + '</p></div>';
+     citeDiv.innerHTML = '<div id="citationDiv" style="font-family: monospace;"><p>' + citeString + '</p></div>';
      // This works, but it's added in kind of an awkward place.
      //try{document.getElementsByClassName('form-group')[0].appendChild(citeDiv);} catch(error) {console.error(error);}
       //alert("Yay");
