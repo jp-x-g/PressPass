@@ -1183,10 +1183,39 @@
      //"Sat, Feb 02, 1918"
      // 0123456789111111
      //           012345
-     
-     var parsedDy = clipdate.substr(9,2);
-     var parsedYr = clipdate.substr(13,4);
+      
+     // var parsedYr = clipdate.substr(13,4);
+     // var parsedDy = clipdate.substr(9,2);
 		 var parsedWk = clipdate.substr(0,3);                              
+      
+     // New approach: use regex instead of wild goose chase every time they change the darn thing.
+     var parsedYr = "0000";
+     try {
+        console.log("Trying");
+        parsedYr = clipdate.match(/[0-9]{4}/)[0];
+     } catch(e) {console.log("Couldn't parse year");}
+     clipdate = clipdate.replaceAll(parsedYr, "");
+     clipdate = clipdate.replaceAll(" ", "");
+     // Find sequence of four digits, store it as parsedYr, and then remove it from the string.
+			
+     var parsedDy = "00";
+     try {
+       parsedDy = clipdate.match(/[0-9]{1,2}/)[0];
+     } catch(e) {console.log("Couldn't parse day");}
+     // After removing year, the only digits left will be the date -- find the 1- or 2- digit sequence.
+     clipdate = clipdate.replaceAll(parsedDy, "");
+     clipdate = clipdate.replaceAll(" ", "");
+     // Day will PROBABLY be 2 digits, but whatever: zero-pad it anyway.
+     parsedDy = ("00" + parsedDy).slice(-2);
+
+        /*
+       var thedays = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+       for (var asdf in thedays) {
+        if (clipdate.indexOf(thedays[asdf] >= 0){
+          var parsedWk = thedays[asdf];
+        } // if finds it
+       } // for each day name
+        */
       
      var parsedMn = "FOO";
      var months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
